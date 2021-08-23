@@ -2,10 +2,12 @@ package com.lattory.lattoryLotoBackEnd.core.provider;
 
 import com.lattory.lattoryLotoBackEnd.core.dto.JsonObject;
 import com.lattory.lattoryLotoBackEnd.core.dto.JsonObjectArray;
+import com.lattory.lattoryLotoBackEnd.core.events.WingNotifyEvent;
 import com.lattory.lattoryLotoBackEnd.core.service.implement.DefaultAuthenticationProviderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,6 +17,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +36,8 @@ public class DefaultAuthenticationProvider implements AuthenticationProvider {
         log.info("============== Start Authorization ===============");
         log.info("============== Authentication :"+authentication.getName());
         log.info("============== Authentication :"+authentication.getAuthorities());
+
+
         try {
             JsonObject input = new JsonObject();
             input.setString("user_name", authentication.getName());

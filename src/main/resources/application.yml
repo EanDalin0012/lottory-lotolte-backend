@@ -21,7 +21,7 @@ spring:
 
   jackson:
     serialization:
-      wrap-root-value: true
+      wrap-root-value: false
 mybatis:
   type-aliases-package: com.lattory.lattoryLotoBackEnd.core.dto
   config-location: classpath:mybatis/mybatis_config.xml
