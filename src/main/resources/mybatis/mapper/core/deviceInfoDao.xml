@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lattory.lattoryLotoBackEnd.core.dao.DeviceInfoDao">
+
+    <select id="save" resultType="JsonObject">
+        <![CDATA[
+		  	INSERT INTO device_info
+				(
+				    id
+				 , user_agent
+				, os
+				, browser
+				, device
+				, os_version
+				, device_type
+				, browser_version
+				, orientation
+				, create_by
+				, create_date
+				, ip
+				)
+			VALUES(
+			    #{id}
+				, #{userAgent}
+				, #{os}
+				, #{browser}
+				, #{device}
+				, #{osVersion}
+				, #{deviceType}
+				, #{browserVersion}
+				, #{orientation}
+				, #{userName}
+				, to_char(NOW(), 'DD-MM-YYYY hh:mm:ss')
+				, #{networkIP}
+				);
+	     ]]>
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        <![CDATA[
+		  SELECT
+	     	COUNT (*)
+	      FROM "device_info"
+	     ]]>
+    </select>
+
+    <select id="inquiry" resultType="JsonObject">
+        <![CDATA[
+		  SELECT
+                 dev.id
+                , dev.user_agent
+                , dev.os
+                , dev.os_version
+                , dev.browser
+                , dev.browser_version
+                , dev.device
+                , dev.device_type
+                , dev.orientation
+                , dev.ip
+          FROM device_info dev
+          WHERE dev.create_by = 'admin@gmail.com';
+	     ]]>
+    </select>
+
+</mapper>

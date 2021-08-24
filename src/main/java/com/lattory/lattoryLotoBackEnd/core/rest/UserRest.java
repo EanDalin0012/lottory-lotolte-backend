@@ -6,6 +6,7 @@ import com.lattory.lattoryLotoBackEnd.core.constant.StatusCode;
 import com.lattory.lattoryLotoBackEnd.core.dto.Header;
 import com.lattory.lattoryLotoBackEnd.core.dto.JsonObject;
 import com.lattory.lattoryLotoBackEnd.core.dto.ResponseData;
+import com.lattory.lattoryLotoBackEnd.core.events.HistoryUserLoginEvent;
 import com.lattory.lattoryLotoBackEnd.core.events.WingNotifyEvent;
 import com.lattory.lattoryLotoBackEnd.core.exception.ValidatorException;
 import com.lattory.lattoryLotoBackEnd.core.service.implement.UserService;
@@ -39,7 +40,10 @@ public class UserRest {
             String userName = jsonObject.getString("userName");
             String networkID = jsonObject.getString("networkIP");
             JsonObject deviceInfo = jsonObject.getJsonObject("deviceInfo");
-            eventPublisher.publishEvent(new WingNotifyEvent(deviceInfo));
+            deviceInfo.setString("userName", userName);
+            if(deviceInfo != null) {
+                eventPublisher.publishEvent(new HistoryUserLoginEvent(deviceInfo));
+            }
 
             if(!userName.trim().equals("") || userName == null) {
                 JsonObject user = new JsonObject();

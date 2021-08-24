@@ -5,14 +5,15 @@
     <select id="loadUserByName" resultType="JsonObject">
         <![CDATA[
 		  	SELECT
-            u.first_name
-            , u.last_name
-            , u.user_name
-            , u.date_birth
+		  	u."id"
+            , u.first_name    as "firstName"
+            , u.last_name   as "lastName"
+            , u.user_name   as "userName"
+            , u.date_birth  as "dateBirth"
             , u.gender
-            , u.resource_id
-            , u.phone_number
-            , u.other_phone_number
+            , u.resource_id         as "resourceID"
+            , u.phone_number        as "phoneNumber"
+            , u.other_phone_number  as "otherPhoneNumber"
         FROM user_ u
         WHERE u.user_name = #{userName};
 	     ]]>
