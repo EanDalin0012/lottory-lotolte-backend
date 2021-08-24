@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lattory.lattoryLotoBackEnd.core.dao.UserDao">
+
+    <select id="loadUserByName" resultType="JsonObject">
+        <![CDATA[
+		  	SELECT
+            u.first_name
+            , u.last_name
+            , u.user_name
+            , u.date_birth
+            , u.gender
+            , u.resource_id
+            , u.phone_number
+            , u.other_phone_number
+        FROM user_ u
+        WHERE u.user_name = #{userName};
+	     ]]>
+    </select>
+
+</mapper>

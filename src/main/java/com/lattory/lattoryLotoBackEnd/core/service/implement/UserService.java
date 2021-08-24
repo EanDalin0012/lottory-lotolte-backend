@@ -20,7 +20,7 @@ public class UserService implements UserInterface {
 
     @Override
     public JsonObject loadUserByName(JsonObject param) throws ValidatorException {
-        ValidatorUtil.validate(param, "userName");
+        // ValidatorUtil.validate(param, "userName");
         return userDao.loadUserByName(param);
     }
 }

@@ -1,6 +1,5 @@
 package com.lattory.lattoryLotoBackEnd.core.config.aspectJ;
 
-import com.lattory.lattoryLotoBackEnd.core.aspectComponent.BotAspect;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Bean;
@@ -14,11 +13,11 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @Configuration
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class AspectJAutoProxy {
-    @Bean
-    public BotAspect wingBotAspect() {
-        System.out.println("EnableAspectJAutoProxy Bean BotAspect");
-        return new BotAspect();
-    }
+//    @Bean
+//    public BotAspect wingBotAspect() {
+//        System.out.println("EnableAspectJAutoProxy Bean BotAspect");
+//        return new BotAspect();
+//    }
 
     @Bean
     public ApplicationEventMulticaster applicationEventMulticaster() {

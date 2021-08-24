@@ -45,27 +45,27 @@ public class DefaultAuthenticationProvider implements AuthenticationProvider {
 
             if (userInfo == null) {
                 log.info("============== Authorization User Not Found ===============");
-                throw new UsernameNotFoundException("User Not found");
+                throw new UsernameNotFoundException("userNotFound");
             }
 
             if (userInfo.getBoolean("accountLocked")) {
                 log.info("============== User Account Locked ===============");
-                throw new UsernameNotFoundException("Your user account locked");
+                throw new UsernameNotFoundException("userLocked");
             }
 
             if (!userInfo.getBoolean("enabled")) {
                 log.info("============== User Enabled False ===============");
-                throw new UsernameNotFoundException("Your user account enabled");
+                throw new UsernameNotFoundException("userDisabled");
             }
 
             if (userInfo.getBoolean("accountExpired")) {
                 log.info("============== User Account Expired ===============");
-                throw new UsernameNotFoundException("Your user account expired");
+                throw new UsernameNotFoundException("userExpired");
             }
 
             if (userInfo.getBoolean("credentialsExpired")) {
                 log.info("============== User Account Credentials Expired ===============>>>>>>>>>>>>");
-                throw new UsernameNotFoundException("Your user account credentials expired");
+                throw new UsernameNotFoundException("userExpired");
             }
 
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -74,7 +74,7 @@ public class DefaultAuthenticationProvider implements AuthenticationProvider {
             boolean isPasswordMatch = passwordEncoder.matches(password, _password);
             System.out.println(isPasswordMatch);
             if (!isPasswordMatch) {
-                throw new UsernameNotFoundException("Password invalid " + 1 + " time");
+                throw new UsernameNotFoundException("Invalid_Password");
             }
 
             List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();

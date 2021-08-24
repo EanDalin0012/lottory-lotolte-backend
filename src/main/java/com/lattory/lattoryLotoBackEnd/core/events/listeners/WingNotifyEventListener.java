@@ -21,8 +21,6 @@ public class WingNotifyEventListener implements ApplicationListener<WingNotifyEv
             System.out.println("getSource "+ event.getSource());
             System.out.println("event "+ event);
             System.out.println("json "+ objectMapper.writeValueAsString(json));
-
-
         } catch (InterruptedException | JsonProcessingException e) {
             e.printStackTrace();
         }
