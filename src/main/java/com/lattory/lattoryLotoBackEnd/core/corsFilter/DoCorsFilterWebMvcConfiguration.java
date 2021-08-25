@@ -36,7 +36,6 @@ public class DoCorsFilterWebMvcConfiguration extends WebMvcConfigurerAdapter {
                 response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
             } else {
                 response.setHeader("Access-Control-Allow-Origin", "*");
-
             }
 
             if (!"OPTIONS".equals(request.getMethod())) {

@@ -5,6 +5,6 @@ import com.lattory.lattoryLotoBackEnd.core.dto.JsonObjectArray;
 
 public interface DeviceInfoInterface {
     JsonObject save(JsonObject param);
-    JsonObjectArray inquiry(JsonObject param);
+    JsonObjectArray inquiry();
     int count();
 }

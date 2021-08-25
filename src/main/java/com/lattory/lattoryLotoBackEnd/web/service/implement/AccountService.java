@@ -31,6 +31,6 @@ public class AccountService implements AccountInterface {
     @Override
     public JsonObject inquiryAccountByUserID(JsonObject param) throws ValidatorException {
         ValidatorUtil.validate(param, "userID");
-        return null;//accountDao.inquiryAccountByUserID(param);
+        return accountDao.inquiryAccountByUserID(param);
     }
 }

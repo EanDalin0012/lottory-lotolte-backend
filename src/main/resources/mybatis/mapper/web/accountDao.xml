@@ -5,18 +5,30 @@
     <select id="inquirySubAccount" resultType="JsonObject">
         <![CDATA[
             SELECT
-                file_source
-            FROM resource_img
-            WHERE id = #{uuid}
+                acc."id"
+                , acc.account_name      as "accountName"
+                , acc.account_id        as "accountId"
+                , acc.account_type      as "accountType"
+                , acc.account_balance   as "accountBalance"
+                , acc.account_curency   as "currency"
+                ,acc.account_status     as "status"
+            from account_details as acdt
+            INNER JOIN account as acc on acc."id" = acdt.sub_account_id
+            WHERE acdt.main_account_id = #{mainAccountID};
 	     ]]>
     </select>
 
     <select id="inquiryAccountByUserID" resultType="JsonObject">
         <![CDATA[
             SELECT
-                file_source
-            FROM resource_img
-            WHERE id = #{uuid}
+                acc."id"
+                , acc.account_name      as "accountName"
+                , acc.account_id        as "accountId"
+                , acc.account_type      as "accountType"
+                , acc.account_balance   as "accountBalance"
+                , acc.account_status    as "status"
+                , acc.account_curency   as "currency"
+            FROM account as acc WHERE acc.user_id = #{userID};
 	     ]]>
     </select>
 
