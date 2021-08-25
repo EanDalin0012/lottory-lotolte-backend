@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lattory.lattoryLotoBackEnd.web.dao.AccountDao">
+
+    <select id="inquirySubAccount" resultType="JsonObject">
+        <![CDATA[
+            SELECT
+                file_source
+            FROM resource_img
+            WHERE id = #{uuid}
+	     ]]>
+    </select>
+
+    <select id="inquiryAccountByUserID" resultType="JsonObject">
+        <![CDATA[
+            SELECT
+                file_source
+            FROM resource_img
+            WHERE id = #{uuid}
+	     ]]>
+    </select>
+
+    <insert id="save">
+        <![CDATA[
+            INSERT INTO resource_img
+            (
+                id,
+                file_source,
+                file_name,
+                file_size,
+                file_extension,
+                file_type,
+                status,
+                original_name,
+                create_date,
+                create_by
+            ) VALUES (
+                #{id},
+                #{file_source},
+                #{file_name},
+                #{file_size},
+                #{file_extension},
+                #{file_type},
+                #{status},
+                #{original_name},
+                to_char(NOW(), 'YYYYMMDD'),
+                #{user_id}
+            )
+    	]]>
+    </insert>
+
+
+</mapper>

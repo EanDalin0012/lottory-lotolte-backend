@@ -18,8 +18,10 @@ public class MyAccountRest {
     private static final Logger log = LoggerFactory.getLogger(MyAccountRest.class);
 
     final DeviceInfoService deviceInfoService;
+    // final AccountService accountService;
     MyAccountRest(DeviceInfoService deviceInfoService) {
         this.deviceInfoService = deviceInfoService;
+//        this.accountService = accountService;
     }
 
     @PostMapping(value = "/inquiry")
