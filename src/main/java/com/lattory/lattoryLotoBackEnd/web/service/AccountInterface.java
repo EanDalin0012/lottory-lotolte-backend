@@ -5,7 +5,8 @@ import com.lattory.lattoryLotoBackEnd.core.dto.JsonObjectArray;
 import com.lattory.lattoryLotoBackEnd.core.exception.ValidatorException;
 
 public interface AccountInterface {
-    JsonObject save(JsonObject param) throws ValidatorException;
+    int save(JsonObject param) throws ValidatorException;
     JsonObjectArray inquirySubAccount(JsonObject param) throws ValidatorException;
     JsonObject inquiryAccountByUserID(JsonObject param) throws ValidatorException;
+    int count();
 }

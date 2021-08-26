@@ -24,11 +24,11 @@ public class Base64WriteImageRest {
     }
 
     @PostMapping(value = "/write")
-    public ResponseData<JsonObject> index(@RequestBody JsonObject jsonObject, @RequestParam("userID") int userID, @RequestParam("lang") String lang) {
+    public ResponseData<JsonObject> index(@RequestBody JsonObject jsonObject, @RequestParam("userId") int userID, @RequestParam("lang") String lang) {
         ResponseData responseData = new ResponseData();
         Header header = new Header(StatusCode.success, MessageCode.success);
         try {
-            String path = "/uploads/products";
+            String path = "/uploads/images";
             String base64 = jsonObject.getString("base64");
             String id = jsonObject.getString("id");
             String fileExtension = jsonObject.getString("file_extension");
@@ -37,34 +37,41 @@ public class Base64WriteImageRest {
 
             String basePath = Base64ImageUtil.decodeToImage(path, base64, id, fileExtension);
             JsonObject input = new JsonObject();
-
+            int resourceId = this.base64WriteImageService.count() + 1;
             if (!basePath.equals("")) {
                 log.info("data:" + jsonObject);
-                input.setString("id", id);
-                input.setString("file_name", id);
-                input.setInt("file_size", jsonObject.getInt("file_size"));
-                input.setString("file_type", jsonObject.getString("file_type"));
-                input.setString("file_extension", jsonObject.getString("file_extension"));
-                input.setString("original_name", jsonObject.getString("file_name"));
-                input.setString("file_source", basePath);
+                input.setInt("id", resourceId);
+                input.setString("fileName", id);
+                input.setInt("fileSize", jsonObject.getInt("file_size"));
+                input.setString("fileType", jsonObject.getString("file_type"));
+                input.setString("fileExtension", jsonObject.getString("file_extension"));
+                input.setString("originalName", jsonObject.getString("file_name"));
+                input.setString("fileSource", basePath);
                 input.setString("status", Status.active);
-                input.setInt("user_id", userID);
+                input.setInt("userID", userID);
                 int save = base64WriteImageService.save(input);
                 if (save > 0) {
-                    // output.setString("status", "Y");
+                    JsonObject jsonObj = new JsonObject();
+                    jsonObj.setInt("resourceID", resourceId);
+                    jsonObj.setString("status", "Y");
+                    responseData.setBody(jsonObj);
+                    responseData.setResult(header);
+                    return responseData;
                 }
             } else {
-                log.info("can not write image");
-//                ErrorMessage message = message(ErrorCode.EXCEPTION_ERR, lang);
-//                responseData.setError(message);
+                JsonObject jsonObj = new JsonObject();
+                jsonObj.setString("status", "N");
+                responseData.setBody(jsonObj);
+                responseData.setResult(header);
+                return responseData;
             }
-
-            log.info("base64:" + base64);
-
-
-            log.info("jsonObject"+responseData);
         }catch (Exception | ValidatorException e) {
             e.printStackTrace();
+            header.setResponseCode(StatusCode.exception);
+            header.setResponseMessage(StatusCode.exception);
+            responseData.setResult(header);
+            e.printStackTrace();
+            return responseData;
         }
         return responseData;
     }

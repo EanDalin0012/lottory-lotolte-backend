@@ -8,4 +8,5 @@ public interface Base64WriteImageInterface {
     int delete(JsonObject param) throws ValidatorException;
     int update(JsonObject param) throws ValidatorException;
     String getResourcesImageById(JsonObject param) throws ValidatorException;
+    int count();
 }

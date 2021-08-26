@@ -24,11 +24,13 @@
                 acc."id"
                 , acc.account_name      as "accountName"
                 , acc.account_id        as "accountId"
-                , acc.account_type      as "accountType"
+                , accType.account_type      as "accountType"
                 , acc.account_balance   as "accountBalance"
                 , acc.account_status    as "status"
                 , acc.account_curency   as "currency"
-            FROM account as acc WHERE acc.user_id = #{userID};
+            FROM account as acc
+            INNER JOIN account_type as accType on acc.account_type = accType."id"
+            WHERE acc.user_id = #{userID};
 	     ]]>
     </select>
 
@@ -61,5 +63,13 @@
     	]]>
     </insert>
 
+
+    <select id="count" resultType="java.lang.Integer">
+        <![CDATA[
+		  SELECT
+	     	COUNT (*)
+	      FROM "account"
+	     ]]>
+    </select>
 
 </mapper>

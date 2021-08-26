@@ -52,8 +52,8 @@ public class WebSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
         webSecurity
                 .ignoring()
                 .antMatchers(
-//                        "/api/web/**"
-                        "/unsecure/**"
+                        "/api/image/**"
+                        , "/unsecure/**"
                         , "/401.html"
                         , "/404.html"
                         , "/500.html");

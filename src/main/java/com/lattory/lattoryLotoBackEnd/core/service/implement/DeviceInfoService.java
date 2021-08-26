@@ -15,16 +15,16 @@ public class DeviceInfoService implements DeviceInfoInterface {
     }
     @Override
     public JsonObject save(JsonObject param) {
-        return deviceInfoDao.save(param);
+        return this.deviceInfoDao.save(param);
     }
 
     @Override
     public JsonObjectArray inquiry() {
-        return deviceInfoDao.inquiry();
+        return this.deviceInfoDao.inquiry();
     }
 
     @Override
     public int count() {
-        return deviceInfoDao.count();
+        return this.deviceInfoDao.count();
     }
 }

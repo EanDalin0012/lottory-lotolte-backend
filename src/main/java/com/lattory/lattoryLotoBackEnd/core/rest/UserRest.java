@@ -10,6 +10,7 @@ import com.lattory.lattoryLotoBackEnd.core.events.HistoryUserLoginEvent;
 import com.lattory.lattoryLotoBackEnd.core.events.WingNotifyEvent;
 import com.lattory.lattoryLotoBackEnd.core.exception.ValidatorException;
 import com.lattory.lattoryLotoBackEnd.core.service.implement.UserService;
+import com.lattory.lattoryLotoBackEnd.web.service.implement.AccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
@@ -22,11 +23,13 @@ import javax.inject.Inject;
 public class UserRest {
     private static final Logger log = LoggerFactory.getLogger(UserRest.class);
     final UserService userService;
+    final AccountService accountService;
     @Inject
     private ApplicationEventPublisher eventPublisher;
 
-    UserRest(UserService userService) {
+    UserRest(UserService userService, AccountService accountService) {
         this.userService = userService;
+        this.accountService = accountService;
     }
 
     @PostMapping(value = "/loadUser")
@@ -38,7 +41,6 @@ public class UserRest {
             ObjectMapper objectMapper = new ObjectMapper();
             log.info(objectMapper.writeValueAsString(jsonObject));
             String userName = jsonObject.getString("userName");
-            String networkID = jsonObject.getString("networkIP");
             JsonObject deviceInfo = jsonObject.getJsonObject("deviceInfo");
             deviceInfo.setString("userName", userName);
             if(deviceInfo != null) {
@@ -48,9 +50,20 @@ public class UserRest {
             if(!userName.trim().equals("") || userName == null) {
                 JsonObject user = new JsonObject();
                 user.setString("userName", userName);
-                JsonObject userData = userService.loadUserByName(user);
-                log.info("User Info:"+objectMapper.writeValueAsString(userData));
-                responseData.setBody(userData);
+                JsonObject userData = this.userService.loadUserByName(user);
+                log.info("User Info :"+objectMapper.writeValueAsString(userData));
+                JsonObject accountInput = new JsonObject();
+                accountInput.setInt("userID", userData.getInt("id"));
+                JsonObject accountInfo = this.accountService.inquiryAccountByUserID(accountInput);
+
+                log.info("account Info:"+objectMapper.writeValueAsString(accountInfo));
+
+                JsonObject data = new JsonObject();
+                data.setJsonObject("userInfo", userData);
+                data.setJsonObject("accountInfo", accountInfo);
+
+                responseData.setBody(data);
+
             } else {
                 header.setResponseCode(StatusCode.notFound);
                 header.setResponseMessage("Invalid_UserName");

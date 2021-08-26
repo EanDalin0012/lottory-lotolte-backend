@@ -9,4 +9,5 @@ public interface Base64WriteImageDao {
     int delete(JsonObject jsonObject);
     int update(JsonObject jsonObject);
     String getResourcesImageById(JsonObject jsonObject);
+    int count();
 }

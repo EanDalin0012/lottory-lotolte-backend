@@ -6,7 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface AccountDao {
-    JsonObject save(JsonObject param);
+    int save(JsonObject param);
     JsonObjectArray inquirySubAccount(JsonObject param);
     JsonObject inquiryAccountByUserID(JsonObject param);
+    int count();
 }

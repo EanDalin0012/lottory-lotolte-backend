@@ -13,7 +13,7 @@
 
     <insert id="save">
         <![CDATA[
-            INSERT INTO resource_img
+            INSERT INTO resource
             (
                 id,
                 file_source,
@@ -23,19 +23,19 @@
                 file_type,
                 status,
                 original_name,
-                create_date,
+                create_at,
                 create_by
             ) VALUES (
                 #{id},
-                #{file_source},
-                #{file_name},
-                #{file_size},
-                #{file_extension},
-                #{file_type},
+                #{fileSource},
+                #{fileName},
+                #{fileSize},
+                #{fileExtension},
+                #{fileType},
                 #{status},
-                #{original_name},
+                #{originalName},
                 to_char(NOW(), 'YYYYMMDD'),
-                #{user_id}
+                #{userID}
             )
     	]]>
     </insert>
@@ -63,5 +63,13 @@
             WHERE id = #{uuid}
 		]]>
     </delete>
+
+    <select id="count" resultType="java.lang.Integer">
+        <![CDATA[
+		  SELECT
+	     	COUNT (*)
+	      FROM "resource"
+	     ]]>
+    </select>
 
 </mapper>

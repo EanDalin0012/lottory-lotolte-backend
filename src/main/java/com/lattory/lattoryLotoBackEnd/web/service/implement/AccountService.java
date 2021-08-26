@@ -17,20 +17,25 @@ public class AccountService implements AccountInterface {
     }
 
     @Override
-    public JsonObject save(JsonObject param) throws ValidatorException {
+    public int save(JsonObject param) throws ValidatorException {
         ValidatorUtil.validate(param, "id", "accountName", "accountID","accountType","accountStatus","userID");
-        return accountDao.save(param);
+        return this.accountDao.save(param);
     }
 
     @Override
     public JsonObjectArray inquirySubAccount(JsonObject param) throws ValidatorException {
         ValidatorUtil.validate(param, "mainAccountID");
-        return accountDao.inquirySubAccount(param);
+        return this.accountDao.inquirySubAccount(param);
     }
 
     @Override
     public JsonObject inquiryAccountByUserID(JsonObject param) throws ValidatorException {
         ValidatorUtil.validate(param, "userID");
-        return accountDao.inquiryAccountByUserID(param);
+        return this.accountDao.inquiryAccountByUserID(param);
+    }
+
+    @Override
+    public int count() {
+        return this.accountDao.count();
     }
 }

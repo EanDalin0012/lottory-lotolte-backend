@@ -20,7 +20,7 @@ public class Base64WriteImageService implements Base64WriteImageInterface {
 
     @Override
     public int save(JsonObject param) throws ValidatorException {
-        return 0;
+        return base64WriteImageDao.save(param);
     }
 
     @Override
@@ -36,5 +36,10 @@ public class Base64WriteImageService implements Base64WriteImageInterface {
     @Override
     public String getResourcesImageById(JsonObject param) throws ValidatorException {
         return null;
+    }
+
+    @Override
+    public int count() {
+        return this.base64WriteImageDao.count();
     }
 }
