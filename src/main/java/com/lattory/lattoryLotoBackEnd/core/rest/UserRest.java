@@ -7,7 +7,6 @@ import com.lattory.lattoryLotoBackEnd.core.dto.Header;
 import com.lattory.lattoryLotoBackEnd.core.dto.JsonObject;
 import com.lattory.lattoryLotoBackEnd.core.dto.ResponseData;
 import com.lattory.lattoryLotoBackEnd.core.events.HistoryUserLoginEvent;
-import com.lattory.lattoryLotoBackEnd.core.events.WingNotifyEvent;
 import com.lattory.lattoryLotoBackEnd.core.exception.ValidatorException;
 import com.lattory.lattoryLotoBackEnd.core.service.implement.UserService;
 import com.lattory.lattoryLotoBackEnd.web.service.implement.AccountService;
