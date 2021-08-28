@@ -15,7 +15,8 @@
             from account_details as acdt
             INNER JOIN account as acc on acc."id" = acdt.sub_account_id
 			INNER JOIN account_type as accType on acc.account_type = accType."id"
-            WHERE acdt.main_account_id = #{mainAccountID};
+            WHERE acdt.main_account_id = #{mainAccountID}
+            ORDER BY acc."id" ASC;
 	     ]]>
     </select>
 
