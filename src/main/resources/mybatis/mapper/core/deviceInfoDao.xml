@@ -29,7 +29,7 @@
 				, #{deviceType}
 				, #{browserVersion}
 				, #{orientation}
-				, #{userName}
+				, #{userID}
 				, to_char(NOW(), 'DD-MM-YYYY hh:mm:ss')
 				, #{networkIP}
 				);
@@ -48,17 +48,17 @@
         <![CDATA[
 		  SELECT
                  dev.id
-                , dev.user_agent
+                , dev.user_agent as "userAgent"
                 , dev.os
-                , dev.os_version
+                , dev.os_version    as "osVersion"
                 , dev.browser
-                , dev.browser_version
+                , dev.browser_version   as "browserVersion"
                 , dev.device
-                , dev.device_type
+                , dev.device_type   as "deviceType"
                 , dev.orientation
                 , dev.ip
           FROM device_info dev
-          WHERE dev.create_by = 'admin@gmail.com';
+          WHERE dev.create_by = #{userID};
 	     ]]>
     </select>
 

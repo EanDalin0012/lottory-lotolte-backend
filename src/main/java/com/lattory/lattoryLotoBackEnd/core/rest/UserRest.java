@@ -41,10 +41,7 @@ public class UserRest {
             log.info(objectMapper.writeValueAsString(jsonObject));
             String userName = jsonObject.getString("userName");
             JsonObject deviceInfo = jsonObject.getJsonObject("deviceInfo");
-            deviceInfo.setString("userName", userName);
-            if(deviceInfo != null) {
-                eventPublisher.publishEvent(new HistoryUserLoginEvent(deviceInfo));
-            }
+
 
             if(!userName.trim().equals("") || userName == null) {
                 JsonObject user = new JsonObject();
@@ -56,6 +53,11 @@ public class UserRest {
                 JsonObject accountInfo = this.accountService.inquiryAccountByUserID(accountInput);
 
                 log.info("account Info:"+objectMapper.writeValueAsString(accountInfo));
+
+                if(deviceInfo != null) {
+                    deviceInfo.setInt("userID", userData.getInt("id"));
+                    eventPublisher.publishEvent(new HistoryUserLoginEvent(deviceInfo));
+                }
 
                 JsonObject data = new JsonObject();
                 data.setJsonObject("userInfo", userData);

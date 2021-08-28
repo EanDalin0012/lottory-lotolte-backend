@@ -19,8 +19,8 @@ public class DeviceInfoService implements DeviceInfoInterface {
     }
 
     @Override
-    public JsonObjectArray inquiry() {
-        return this.deviceInfoDao.inquiry();
+    public JsonObjectArray inquiry(JsonObject param) {
+        return this.deviceInfoDao.inquiry(param);
     }
 
     @Override

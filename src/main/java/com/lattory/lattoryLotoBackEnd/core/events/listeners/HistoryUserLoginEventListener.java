@@ -25,7 +25,7 @@ public class HistoryUserLoginEventListener implements ApplicationListener<Histor
             JsonObject deviceInfo = (JsonObject) event.getSource();
             JsonObject input = new JsonObject();
             input.setInt("id", (deviceInfoService.count() + 1));
-            input.setString("userAgent", "");
+            input.setString("userAgent", deviceInfo.getString("userAgent"));
             input.setString("os", deviceInfo.getString("os"));
             input.setString("device", deviceInfo.getString("device"));
             input.setString("browser", deviceInfo.getString("browser"));
@@ -34,7 +34,7 @@ public class HistoryUserLoginEventListener implements ApplicationListener<Histor
             input.setString("browserVersion", deviceInfo.getString("browserVersion"));
             input.setString("orientation", deviceInfo.getString("orientation"));
             input.setString("networkIP", deviceInfo.getString("networkIP"));
-            input.setString("userName", deviceInfo.getString("userName"));
+            input.setInt("userID", deviceInfo.getInt("userID"));
             log.info("device info:"+objectMapper.writeValueAsString(input));
             deviceInfoService.save(input);
         } catch (Exception e) {

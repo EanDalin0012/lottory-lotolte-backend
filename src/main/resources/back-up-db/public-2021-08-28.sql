@@ -12,7 +12,7 @@
  Target Server Version : 130003
  File Encoding         : 65001
 
- Date: 28/08/2021 14:23:08
+ Date: 28/08/2021 14:51:38
 */
 
 
@@ -62,7 +62,6 @@ CREATE TABLE "public"."account" (
 -- Records of account
 -- ----------------------------
 INSERT INTO "public"."account" VALUES (1, 'Company Account', '999999999', 1, 999999999, 'act', 1, '20210825', NULL, NULL, 1, 'KH');
-INSERT INTO "public"."account" VALUES (2, 'Paly', '000000001', 2, 0, 'act', 1, '20210825', NULL, NULL, 2, 'KH');
 INSERT INTO "public"."account" VALUES (3, 'Dalin', '000000002', 2, 10000, 'act', 1, '20210825', NULL, NULL, 3, 'KH');
 INSERT INTO "public"."account" VALUES (4, 'Tiny', '000000003', 3, 10000, 'act', 1, '20210825', NULL, NULL, 3, 'KH');
 INSERT INTO "public"."account" VALUES (5, 'Sok Phea', '000000004', 4, 10000, 'act', 1, '20210825', NULL, NULL, 3, 'KH');
@@ -70,6 +69,7 @@ INSERT INTO "public"."account" VALUES (6, 'Meng Sampath', '000000005', 5, 10000,
 INSERT INTO "public"."account" VALUES (7, 'Saven Aritu', '000000006', 4, 10000, 'act', 1, '20210825', NULL, NULL, 3, 'KH');
 INSERT INTO "public"."account" VALUES (9, 'សុខ ជា', '000000008', 5, 10000, 'act', 1, '20210825', NULL, NULL, 3, 'KH');
 INSERT INTO "public"."account" VALUES (8, 'ជី​​ ណា', '000000007', 5, 10000, 'act', 1, '20210825', NULL, NULL, 3, 'KH');
+INSERT INTO "public"."account" VALUES (2, 'Paly', '000000001', 2, 10000, 'act', 1, '20210825', NULL, NULL, 2, 'KH');
 
 -- ----------------------------
 -- Table structure for account_details
@@ -421,13 +421,14 @@ INSERT INTO "public"."resource" VALUES (6, '4c7b751d-219c-4b00-8686-aaa0efcd674f
 DROP TABLE IF EXISTS "public"."transfer_funds ";
 CREATE TABLE "public"."transfer_funds " (
   "id" int4 NOT NULL,
-  "transfer_from_account_id" varchar(25) COLLATE "pg_catalog"."default",
-  "receiver_account_id" varchar(25) COLLATE "pg_catalog"."default",
-  "amount" numeric(255,0),
-  "transfer_funds_type" varchar(255) COLLATE "pg_catalog"."default",
+  "transfer_from_account_id" varchar(25) COLLATE "pg_catalog"."default" NOT NULL,
+  "receiver_account_id" varchar(25) COLLATE "pg_catalog"."default" NOT NULL,
+  "amount" numeric(255,0) NOT NULL,
+  "transfer_funds_type" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
   "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "user_id" int4,
-  "transfer_funds_date" varchar(255) COLLATE "pg_catalog"."default"
+  "user_id" int4 NOT NULL,
+  "transfer_funds_date" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+  "currency" varchar(25) COLLATE "pg_catalog"."default" NOT NULL
 )
 ;
 COMMENT ON COLUMN "public"."transfer_funds "."transfer_funds_type" IS 'deposit | withdrawal';
@@ -435,6 +436,7 @@ COMMENT ON COLUMN "public"."transfer_funds "."transfer_funds_type" IS 'deposit |
 -- ----------------------------
 -- Records of transfer_funds 
 -- ----------------------------
+INSERT INTO "public"."transfer_funds " VALUES (1, '999999999', '000000001', 10000, 'deposit ', 'deposit ', 1, '202108280245', 'KH');
 
 -- ----------------------------
 -- Table structure for user_

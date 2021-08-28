@@ -34,8 +34,9 @@ public class MyAccountRest {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             log.info("jsonObject :"+objectMapper.writeValueAsString(jsonObject));
-
-            JsonObjectArray jsonObjectArray = deviceInfoService.inquiry();
+            JsonObject deviceInfo = new JsonObject();
+            deviceInfo.setInt("userID", userID);
+            JsonObjectArray jsonObjectArray = deviceInfoService.inquiry(deviceInfo);
 
             if(jsonObject.getInt("userID") == 0 ) {
                 header.setResponseCode(StatusCode.notFound);
@@ -48,7 +49,7 @@ public class MyAccountRest {
             JsonObject accountObj = accountService.inquiryAccountByUserID(userInput);
 
             int mainAccountId = accountObj.getInt("id");
-            log.info("main account id"+mainAccountId);
+            log.info("main account id:"+mainAccountId);
             JsonObject inquirySubAccount = new JsonObject();
             inquirySubAccount.setInt("mainAccountID", mainAccountId);
             JsonObjectArray subAccounts = accountService.inquirySubAccount(inquirySubAccount);
