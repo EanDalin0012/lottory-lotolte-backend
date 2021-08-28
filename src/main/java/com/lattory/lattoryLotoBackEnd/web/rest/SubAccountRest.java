@@ -31,7 +31,7 @@ public class SubAccountRest {
             ObjectMapper objectMapper = new ObjectMapper();
             int mainAccountId = jsonObject.getInt("mainAccountID");
             if (mainAccountId != 0) {
-                log.info("main account id"+mainAccountId);
+                log.info("main account id:"+mainAccountId);
                 JsonObject inquirySubAccount = new JsonObject();
                 inquirySubAccount.setInt("mainAccountID", mainAccountId);
                 JsonObjectArray subAccounts = accountService.inquirySubAccount(inquirySubAccount);

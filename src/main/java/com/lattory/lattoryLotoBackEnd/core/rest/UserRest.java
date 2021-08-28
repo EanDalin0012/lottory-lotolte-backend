@@ -35,7 +35,6 @@ public class UserRest {
     public ResponseData<JsonObject> loadUserByUserName(@RequestBody JsonObject jsonObject, @RequestParam("lang") String lang) {
         ResponseData responseData = new ResponseData();
         Header header = new Header(StatusCode.success, MessageCode.success);
-        JsonObject output = new JsonObject();
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             log.info(objectMapper.writeValueAsString(jsonObject));
