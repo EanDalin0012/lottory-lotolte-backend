@@ -8,14 +8,13 @@
                 acc."id"
                 , acc.account_name      as "accountName"
                 , acc.account_id        as "accountId"
-                , accType.account_type      as "accountType"
+                , acc.account_type      as "accountType"
                 , acc.account_balance   as "accountBalance"
-                , acc.account_curency   as "currency"
+                , acc.account_currency   as "currency"
                 ,acc.account_status     as "status"
             from account_details as acdt
             INNER JOIN account as acc on acc."id" = acdt.sub_account_id
-			INNER JOIN account_type as accType on acc.account_type = accType."id"
-            WHERE acdt.main_account_id = #{mainAccountID}
+			WHERE acdt.main_account_id = #{mainAccountID}
             ORDER BY acc."id" ASC;
 	     ]]>
     </select>
@@ -26,41 +25,40 @@
                 acc."id"
                 , acc.account_name      as "accountName"
                 , acc.account_id        as "accountId"
-                , accType.account_type      as "accountType"
+                , acc.account_type      as "accountType"
                 , acc.account_balance   as "accountBalance"
                 , acc.account_status    as "status"
-                , acc.account_curency   as "currency"
+                , acc.account_currency   as "currency"
             FROM account as acc
-            INNER JOIN account_type as accType on acc.account_type = accType."id"
             WHERE acc.user_id = #{userID};
 	     ]]>
     </select>
 
     <insert id="save">
         <![CDATA[
-            INSERT INTO resource_img
+            INSERT INTO account
             (
-                id,
-                file_source,
-                file_name,
-                file_size,
-                file_extension,
-                file_type,
-                status,
-                original_name,
-                create_date,
-                create_by
+                id
+                , account_name
+                , account_id
+                , account_type
+                , account_balance
+                , account_status
+                , create_by
+                , create_at
+                , user_id
+                , account_currency
             ) VALUES (
-                #{id},
-                #{file_source},
-                #{file_name},
-                #{file_size},
-                #{file_extension},
-                #{file_type},
-                #{status},
-                #{original_name},
-                to_char(NOW(), 'YYYYMMDD'),
-                #{user_id}
+                #{id}
+                , #{accountName}
+                , #{accountID}
+                , #{accountType}
+                , #{accountBalance}
+                , #{status}
+                , #{createBy}
+                , to_char(NOW(), 'YYYYMMDD')
+                , #{userID}
+                , #{currency}
             )
     	]]>
     </insert>
@@ -71,6 +69,14 @@
 		  SELECT
 	     	COUNT (*)
 	      FROM "account"
+	     ]]>
+    </select>
+
+    <select id="maxAccountID" resultType="java.lang.Integer">
+        <![CDATA[
+		  SELECT MAX(account_id)
+        FROM account
+        WHERE account_id != '999999999';
 	     ]]>
     </select>
 

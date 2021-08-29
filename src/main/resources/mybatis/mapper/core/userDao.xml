@@ -19,4 +19,77 @@
 	     ]]>
     </select>
 
+    <insert id="addNewUser">
+        <![CDATA[
+            INSERT INTO user_
+            (
+                id
+                , account_expired
+                , account_locked
+                , credentials_expired
+                , enabled
+
+                , is_first_login
+                , password
+                , user_name
+                , status
+                , create_date
+
+                , create_by
+                , first_name
+                , last_name
+                , gender
+                , date_birth
+
+                , phone_number
+                , other_phone_number
+                , identify_id
+                , resource_id
+                , remark
+
+            ) VALUES (
+                #{id}
+                , false
+                , false
+                , false
+                , true
+
+                , true
+                , #{password}
+                , #{userName}
+                , #{userID}
+                , to_char(NOW(), 'YYYYMMDD')
+                , #{userID}
+
+                , #{firstName}
+                , #{lastName}
+                , #{gender}
+                , #{dateBirth}
+                , #{phoneNumber}
+
+                , #{otherPhoneNumber}
+                , #{identifyID}
+                , #{resourceID}
+                , #{remark}
+            )
+    	]]>
+    </insert>
+
+    <update id="resetPassword">
+        <![CDATA[
+            UPDATE user_
+			SET
+				password 	= #{password}
+			WHERE id 	= #{userID}
+    	]]>
+    </update>
+
+    <select id="count" resultType="java.lang.Integer">
+        <![CDATA[
+		  SELECT
+	     	COUNT (*)
+	      FROM "user_"
+	     ]]>
+    </select>
+
 </mapper>

@@ -23,4 +23,20 @@ public class UserService implements UserInterface {
         ValidatorUtil.validate(param, "userName");
         return this.userDao.loadUserByName(param);
     }
+
+    @Override
+    public int addNewUser(JsonObject jsonObject) throws ValidatorException {
+        ValidatorUtil.validate(jsonObject, "id","userName", "firstName", "lastName", "gender", "dateBirth");
+        return this.userDao.addNewUser(jsonObject);
+    }
+
+    @Override
+    public int resetPassword(JsonObject jsonObject) throws ValidatorException {
+        return this.userDao.resetPassword(jsonObject);
+    }
+
+    @Override
+    public int count() {
+        return this.userDao.count();
+    }
 }

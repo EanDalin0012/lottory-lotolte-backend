@@ -10,4 +10,5 @@ public interface AccountDao {
     JsonObjectArray inquirySubAccount(JsonObject param);
     JsonObject inquiryAccountByUserID(JsonObject param);
     int count();
+    int maxAccountID();
 }

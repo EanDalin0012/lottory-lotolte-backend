@@ -18,7 +18,7 @@ public class AccountService implements AccountInterface {
 
     @Override
     public int save(JsonObject param) throws ValidatorException {
-        ValidatorUtil.validate(param, "id", "accountName", "accountID","accountType","accountStatus","userID");
+        ValidatorUtil.validate(param, "id", "accountName", "accountID","accountType","accountStatus","userID", "currency");
         return this.accountDao.save(param);
     }
 
@@ -37,5 +37,10 @@ public class AccountService implements AccountInterface {
     @Override
     public int count() {
         return this.accountDao.count();
+    }
+
+    @Override
+    public int maxAccountID() {
+        return this.accountDao.maxAccountID();
     }
 }

@@ -5,4 +5,7 @@ import com.lattory.lattoryLotoBackEnd.core.exception.ValidatorException;
 
 public interface UserInterface {
     JsonObject loadUserByName(JsonObject param) throws ValidatorException;
+    int addNewUser(JsonObject jsonObject) throws ValidatorException;
+    int resetPassword(JsonObject jsonObject) throws ValidatorException;
+    int count();
 }
