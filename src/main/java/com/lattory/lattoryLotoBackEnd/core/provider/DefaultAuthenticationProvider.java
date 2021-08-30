@@ -36,32 +36,32 @@ public class DefaultAuthenticationProvider implements AuthenticationProvider {
 
         try {
             JsonObject input = new JsonObject();
-            input.setString("user_name", authentication.getName());
+            input.setString("userName", authentication.getName());
             JsonObject userInfo = userService.getUserObjectByName(input);
 
             if (userInfo == null) {
                 log.info("============== Authorization User Not Found ===============");
-                throw new UsernameNotFoundException("userNotFound");
+                throw new UsernameNotFoundException("UserNameNotFound");
             }
 
             if (userInfo.getBoolean("accountLocked")) {
                 log.info("============== User Account Locked ===============");
-                throw new UsernameNotFoundException("userLocked");
+                throw new UsernameNotFoundException("UserLocked");
             }
 
             if (!userInfo.getBoolean("enabled")) {
                 log.info("============== User Enabled False ===============");
-                throw new UsernameNotFoundException("userDisabled");
+                throw new UsernameNotFoundException("UserDisabled");
             }
 
             if (userInfo.getBoolean("accountExpired")) {
                 log.info("============== User Account Expired ===============");
-                throw new UsernameNotFoundException("userExpired");
+                throw new UsernameNotFoundException("UserExpired");
             }
 
             if (userInfo.getBoolean("credentialsExpired")) {
                 log.info("============== User Account Credentials Expired ===============>>>>>>>>>>>>");
-                throw new UsernameNotFoundException("userExpired");
+                throw new UsernameNotFoundException("UserExpired");
             }
 
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -70,7 +70,7 @@ public class DefaultAuthenticationProvider implements AuthenticationProvider {
             boolean isPasswordMatch = passwordEncoder.matches(password, _password);
             System.out.println(isPasswordMatch);
             if (!isPasswordMatch) {
-                throw new UsernameNotFoundException("Invalid_Password");
+                throw new UsernameNotFoundException("InvalidPassword");
             }
 
             List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();

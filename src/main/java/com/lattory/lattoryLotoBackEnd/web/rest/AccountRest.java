@@ -183,7 +183,7 @@ public class AccountRest {
                 responseData.setBody(jsonObj);
             } else {
                 jsonObj.setString("status", "N");
-                // transactionManager.rollback(transactionStatus);
+                transactionManager.rollback(transactionStatus);
                 responseData.setBody(jsonObj);
             }
 

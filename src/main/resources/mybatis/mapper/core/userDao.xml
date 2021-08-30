@@ -4,8 +4,8 @@
 
     <select id="loadUserByName" resultType="JsonObject">
         <![CDATA[
-		  	SELECT
-		  	u."id"
+            SELECT
+		  		u.id
             , u.first_name    as "firstName"
             , u.last_name   as "lastName"
             , u.user_name   as "userName"
@@ -14,8 +14,10 @@
             , u.resource_id         as "resourceID"
             , u.phone_number        as "phoneNumber"
             , u.other_phone_number  as "otherPhoneNumber"
+			, u.create_date			as "createDate"
+			, u.address
         FROM user_ u
-        WHERE u.user_name = #{userName};
+        WHERE u.user_name = #{userName}
 	     ]]>
     </select>
 

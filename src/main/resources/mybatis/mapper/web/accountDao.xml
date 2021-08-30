@@ -54,7 +54,7 @@
                 , #{accountID}
                 , #{accountType}
                 , #{accountBalance}
-                , #{status}
+                , #{accountStatus}
                 , #{createBy}
                 , to_char(NOW(), 'YYYYMMDD')
                 , #{userID}

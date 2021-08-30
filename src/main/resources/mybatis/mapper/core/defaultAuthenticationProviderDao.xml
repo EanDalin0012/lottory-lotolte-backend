@@ -20,20 +20,20 @@
 
     <select id="getUserByName" resultMap="user">
         <![CDATA[
-			select
-				u.id
+			SELECT
+				 u.id
 				, u.user_name
 				, u."password"
 				, u.account_expired
 				, u.account_locked
 				, u.credentials_expired
 				, u.enabled
-				, a."name"		as "authority_name"
-				, a.id 			as "authority_id"
-			from user_ u
-			inner join users_authorities ua on ua.user_id = u.id
-			inner join authority a on a.id = ua.authority_id
-			where u.user_name = #{user_name}
+				, au."name" as "authority_name"
+				, au."id" as "authority_id"
+			FROM user_ as u
+			LEFT JOIN users_authorities as ua on u."id" = ua.user_id
+			LEFT JOIN authority as au on au."id" = ua.authority_id
+			WHERE user_name = #{userName};
 	   ]]>
     </select>
 

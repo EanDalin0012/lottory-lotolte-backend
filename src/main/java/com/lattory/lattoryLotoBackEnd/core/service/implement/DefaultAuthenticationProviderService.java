@@ -32,7 +32,7 @@ public class DefaultAuthenticationProviderService implements DefaultAuthenticati
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
             JsonObject input = new JsonObject();
-            input.put("user_name", username);
+            input.put("userName", username);
             JsonObject userInfo = defaultAuthenticationProviderDao.getUserByName(input);
             log.info("user info:"+ userInfo.toString());
             String userName = (String) userInfo.get("userName");
