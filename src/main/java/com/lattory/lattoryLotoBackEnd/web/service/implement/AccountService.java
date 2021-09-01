@@ -43,4 +43,10 @@ public class AccountService implements AccountInterface {
     public int maxAccountID() {
         return this.accountDao.maxAccountID();
     }
+
+    @Override
+    public int updateAccountName(JsonObject param) throws ValidatorException {
+        ValidatorUtil.validate(param, "id", "accountID", "accountName");
+        return this.accountDao.updateAccountName(param);
+    }
 }

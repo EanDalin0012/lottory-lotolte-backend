@@ -80,4 +80,13 @@
 	     ]]>
     </select>
 
+    <update id="updateAccountName">
+        <![CDATA[
+            UPDATE account
+			SET
+			    account_name      = #{accountName}
+			WHERE id 	= #{id} and account_id = #{accountID}
+    	]]>
+    </update>
+
 </mapper>

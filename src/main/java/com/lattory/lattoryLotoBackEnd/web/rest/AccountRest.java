@@ -22,7 +22,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/api/account/v0")
+@RequestMapping(value = "/api/account")
 public class AccountRest {
     private static final Logger log = LoggerFactory.getLogger(AccountRest.class);
 
@@ -40,7 +40,7 @@ public class AccountRest {
         this.identifyService = identifyService;
     }
 
-    @PostMapping(value = "/save")
+    @PostMapping(value = "/v0/save")
     public ResponseData save(@RequestBody JsonObject jsonObject, @RequestParam("userId") int userID, @RequestParam("lang") String lang) {
         ResponseData responseData = new ResponseData();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -201,6 +201,46 @@ public class AccountRest {
         }
         header.setResponseCode(StatusCode.success);
         responseData.setResult(header);
+        return responseData;
+    }
+
+    @PostMapping(value = "/v0/update/accountName")
+    public ResponseData updateAccountName(@RequestBody JsonObject jsonObject, @RequestParam("userId") int userID, @RequestParam("lang") String lang) {
+        ResponseData responseData = new ResponseData();
+        Header header = new Header(StatusCode.notFound, MessageCode.notFound);
+        try {
+            String accountName = jsonObject.getString("accountName");
+            String accountID = jsonObject.getString("accountID");
+            int id = jsonObject.getInt("id");
+            if (id == 0) {
+                header.setResponseMessage("Invalid_AccountID");
+                responseData.setResult(header);
+                return responseData;
+            } else if (accountName ==null || accountName == "") {
+                header.setResponseMessage("Invalid_AccountName");
+                responseData.setResult(header);
+                return responseData;
+            } else if (accountID ==null || accountID == "") {
+                header.setResponseMessage("Invalid_AccountID");
+                responseData.setResult(header);
+                return responseData;
+            } else {
+                int update = this.accountService.updateAccountName(jsonObject);
+                if (update > 0) {
+                    header.setResponseCode(StatusCode.success);
+                    header.setResponseMessage( MessageCode.notFound);
+                    responseData.setBody(header);
+                    responseData.setResult(header);
+                    return responseData;
+                }
+            }
+        }catch (Exception | ValidatorException e) {
+            header.setResponseCode(StatusCode.exception);
+            header.setResponseMessage(StatusCode.exception);
+            responseData.setResult(header);
+            e.printStackTrace();
+            return responseData;
+        }
         return responseData;
     }
 
