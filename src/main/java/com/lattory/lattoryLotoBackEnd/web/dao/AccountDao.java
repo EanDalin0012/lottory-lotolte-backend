@@ -12,4 +12,5 @@ public interface AccountDao {
     int count();
     int maxAccountID();
     int updateAccountName(JsonObject param);
+    JsonObject inquiryUserInfoByAccountID(JsonObject param);
 }

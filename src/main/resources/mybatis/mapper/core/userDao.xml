@@ -21,6 +21,25 @@
 	     ]]>
     </select>
 
+    <select id="inquiryUserInfoByID" resultType="JsonObject">
+        <![CDATA[
+            SELECT
+                    u.id
+                , u.first_name    as "firstName"
+                , u.last_name   as "lastName"
+                , u.user_name   as "userName"
+                , u.date_birth  as "dateBirth"
+                , u.gender
+                , u.resource_id         as "resourceID"
+                , u.phone_number        as "phoneNumber"
+                , u.other_phone_number  as "otherPhoneNumber"
+                , u.create_date			as "createDate"
+                , u.address
+            FROM user_ u
+            WHERE u.id = #{userID}
+	     ]]>
+    </select>
+
     <insert id="addNewUser">
         <![CDATA[
             INSERT INTO user_
@@ -99,8 +118,9 @@
         <![CDATA[
             UPDATE user_
 			SET
-				password 	= #{password}
-			WHERE id 	= #{userID}
+				password 	        = #{password}
+				, is_first_login    = #{isFirstLogin}
+			WHERE id 	= #{id} and user_name = #{userName}
     	]]>
     </update>
 

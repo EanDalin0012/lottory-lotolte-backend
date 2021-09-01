@@ -72,6 +72,22 @@
 	     ]]>
     </select>
 
+    <select id="inquiryUserInfoByAccountID" resultType="JsonObject">
+        <![CDATA[
+            SELECT
+                user_id as "userID"
+                , id
+                , account_name as "accountName"
+                , account_id as "accountID"
+                , account_type as "accountType"
+                , account_balance as "accountBalance"
+                , account_status as "status"
+                , account_currency as "currency"
+            FROM account
+            WHERE id 	= #{id} and account_id = #{accountID}
+	     ]]>
+    </select>
+
     <select id="maxAccountID" resultType="java.lang.Integer">
         <![CDATA[
 		  SELECT MAX(account_id)

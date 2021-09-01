@@ -11,4 +11,5 @@ public interface UserDao {
     int resetPassword(JsonObject jsonObject) throws ValidatorException;
     int count();
     int updateUserInfo(JsonObject jsonObject) throws ValidatorException;
+    JsonObject inquiryUserInfoByID(JsonObject param) throws ValidatorException;
 }

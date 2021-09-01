@@ -32,6 +32,7 @@ public class UserService implements UserInterface {
 
     @Override
     public int resetPassword(JsonObject jsonObject) throws ValidatorException {
+        ValidatorUtil.validate(jsonObject, "id","userName", "password", "isFirstLogin");
         return this.userDao.resetPassword(jsonObject);
     }
 
@@ -44,5 +45,11 @@ public class UserService implements UserInterface {
     public int updateUserInfo(JsonObject jsonObject) throws ValidatorException {
         ValidatorUtil.validate(jsonObject, "userID","firstName", "lastName", "gender", "dateBirth");
         return this.userDao.updateUserInfo(jsonObject);
+    }
+
+    @Override
+    public JsonObject inquiryUserInfoByID(JsonObject param) throws ValidatorException {
+        ValidatorUtil.validate(param, "userID");
+        return this.userDao.inquiryUserInfoByID(param);
     }
 }

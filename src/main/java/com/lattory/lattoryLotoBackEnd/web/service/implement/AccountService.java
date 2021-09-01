@@ -49,4 +49,10 @@ public class AccountService implements AccountInterface {
         ValidatorUtil.validate(param, "id", "accountID", "accountName");
         return this.accountDao.updateAccountName(param);
     }
+
+    @Override
+    public JsonObject inquiryUserInfoByAccountID(JsonObject param) throws ValidatorException {
+        ValidatorUtil.validate(param, "id", "accountID");
+        return this.accountDao.inquiryUserInfoByAccountID(param);
+    }
 }

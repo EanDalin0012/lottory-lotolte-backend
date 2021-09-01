@@ -244,6 +244,30 @@ public class AccountRest {
         return responseData;
     }
 
+    @PostMapping(value = "/v0/inquiry/user-info")
+    public ResponseData inquiryUserByAccountID(@RequestBody JsonObject jsonObject, @RequestParam("userId") int userID, @RequestParam("lang") String lang) {
+        ResponseData responseData = new ResponseData();
+        Header header = new Header(StatusCode.success, MessageCode.success);
+        try {
+            JsonObject jsonObj = this.accountService.inquiryUserInfoByAccountID(jsonObject);
+
+            JsonObject input = new JsonObject();
+            input.setInt("userID", jsonObj.getInt("userID"));
+            JsonObject userInfo = this.userService.inquiryUserInfoByID(input);
+            responseData.setBody(userInfo);
+
+        }catch (Exception | ValidatorException e) {
+            header.setResponseCode(StatusCode.exception);
+            header.setResponseMessage(StatusCode.exception);
+            responseData.setResult(header);
+            e.printStackTrace();
+            return responseData;
+        }
+
+        responseData.setResult(header);
+        return responseData;
+    }
+
     private String generateAccountID(int accountID) {
         int accountLength = String.valueOf(accountID).length();
         System.out.println(accountLength);

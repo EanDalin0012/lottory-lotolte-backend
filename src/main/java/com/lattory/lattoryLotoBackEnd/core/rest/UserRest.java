@@ -13,6 +13,7 @@ import com.lattory.lattoryLotoBackEnd.web.service.implement.AccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -120,6 +121,54 @@ public class UserRest {
         }
         return  responseData;
     }
+
+
+    @PostMapping(value = "/v0/reset-password")
+    public ResponseData<JsonObject> resetPassword(@RequestBody JsonObject jsonObject, @RequestParam("lang") String lang) {
+        ResponseData responseData = new ResponseData();
+        Header header = new Header(StatusCode.success, MessageCode.success);
+        try {
+            String userName =  jsonObject.getString("userName").trim();
+            int id =  jsonObject.getInt("id");
+            String password = jsonObject.getString("password").trim();
+
+            if (id == 0) {
+                header.setResponseMessage("Invalid_UserName");
+                responseData.setResult(header);
+                return responseData;
+            }  else if (userName ==null || userName.equals("")) {
+                header.setResponseMessage("Invalid_UserName");
+                responseData.setResult(header);
+                return responseData;
+            } else if (password ==null || password.equals("")) {
+                header.setResponseMessage("Invalid_Password");
+                responseData.setResult(header);
+                return responseData;
+            }  else {
+                BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+                String encryptPassword = passwordEncoder.encode(password);
+                JsonObject input = new JsonObject();
+                input.set("id", id);
+                input.setString("userName", userName);
+                input.setString("password", encryptPassword);
+                input.setBoolean("isFirstLogin", true);
+                int update = this.userService.resetPassword(input);
+                if (update > 0 ) {
+                    responseData.setResult(header);
+                    responseData.setBody(header);
+                    return  responseData;
+                }
+            }
+        } catch (Exception | ValidatorException e) {
+            e.printStackTrace();
+            header.setResponseCode(StatusCode.exception);
+            header.setResponseMessage(StatusCode.exception);
+            responseData.setResult(header);
+            return responseData;
+        }
+        return  responseData;
+    }
+
 
 
 }
