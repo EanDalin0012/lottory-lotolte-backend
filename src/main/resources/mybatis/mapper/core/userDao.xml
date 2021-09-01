@@ -48,6 +48,7 @@
                 , identify_id
                 , resource_id
                 , remark
+                , address
 
             ) VALUES (
                 #{id}
@@ -73,9 +74,26 @@
                 , #{identifyID}
                 , #{resourceID}
                 , #{remark}
+                , #{address}
             )
     	]]>
     </insert>
+
+    <update id="updateUserInfo">
+        <![CDATA[
+            UPDATE user_
+			SET
+			    first_name      = #{firstName}
+			    , last_name     = #{lastName}
+			    , gender        = #{gender}
+			    , date_birth    = #{dateBirth}
+			    , phone_number  = #{phoneNumber}
+			    , other_phone_number    = #{otherPhone}
+			    , address               = #{address}
+			    , resource_id           = #{resourceID}
+			WHERE id 	= #{userID}
+    	]]>
+    </update>
 
     <update id="resetPassword">
         <![CDATA[

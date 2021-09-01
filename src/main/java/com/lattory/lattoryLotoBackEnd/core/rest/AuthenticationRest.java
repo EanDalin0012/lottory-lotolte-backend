@@ -45,7 +45,7 @@ public class AuthenticationRest {
                 OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenValue);
                 tokenStore.removeAccessToken(accessToken);
             }
-            responseData.setBody(output);
+            responseData.setBody(header);
 
             log.info("========= Response Values:" + objectMapper.writeValueAsString(responseData));
             log.info("========== End Invoke Token ===========");
@@ -56,6 +56,7 @@ public class AuthenticationRest {
             header.setResponseCode(StatusCode.exception);
             header.setResponseMessage(e.getCause().toString());
         }
+        responseData.setResult(header);
         return responseData;
     }
 }

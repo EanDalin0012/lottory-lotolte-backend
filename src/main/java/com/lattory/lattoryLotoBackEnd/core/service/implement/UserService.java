@@ -39,4 +39,10 @@ public class UserService implements UserInterface {
     public int count() {
         return this.userDao.count();
     }
+
+    @Override
+    public int updateUserInfo(JsonObject jsonObject) throws ValidatorException {
+        ValidatorUtil.validate(jsonObject, "userID","firstName", "lastName", "gender", "dateBirth");
+        return this.userDao.updateUserInfo(jsonObject);
+    }
 }

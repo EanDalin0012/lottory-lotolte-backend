@@ -8,4 +8,5 @@ public interface UserInterface {
     int addNewUser(JsonObject jsonObject) throws ValidatorException;
     int resetPassword(JsonObject jsonObject) throws ValidatorException;
     int count();
+    int updateUserInfo(JsonObject jsonObject) throws ValidatorException;
 }

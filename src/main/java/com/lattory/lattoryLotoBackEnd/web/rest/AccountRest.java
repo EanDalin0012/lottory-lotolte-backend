@@ -68,6 +68,7 @@ public class AccountRest {
             String dateBirth = personalAccountInfo.getString("dateBirth").trim();
             String phoneNumber = personalAccountInfo.getString("phoneNumber").trim();
             String otherPhoneNumber = personalAccountInfo.getString("otherPhone").trim();
+            String address = personalAccountInfo.getString("address").trim();
 
             int personalAccountInfoResourceID= personalAccountInfo.getInt("resourceID");
             String remark = jsonObject.getString("remark").trim();
@@ -141,6 +142,8 @@ public class AccountRest {
             personalInform.setInt("resourceID", personalAccountInfoResourceID);
             personalInform.setString("remark", remark);
             personalInform.setInt("userID", userID);
+            personalInform.setString("address", address);
+
             log.info("personalInform :"+ objectMapper.writeValueAsString(personalInform));
             int savePersonalInfo = this.userService.addNewUser(personalInform);
 

@@ -7,7 +7,7 @@
             SELECT
                 acc."id"
                 , acc.account_name      as "accountName"
-                , acc.account_id        as "accountId"
+                , acc.account_id        as "accountID"
                 , acc.account_type      as "accountType"
                 , acc.account_balance   as "accountBalance"
                 , acc.account_currency   as "currency"
@@ -24,7 +24,7 @@
             SELECT
                 acc."id"
                 , acc.account_name      as "accountName"
-                , acc.account_id        as "accountId"
+                , acc.account_id        as "accountID"
                 , acc.account_type      as "accountType"
                 , acc.account_balance   as "accountBalance"
                 , acc.account_status    as "status"

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 
 @RestController
-@RequestMapping(value = "/api/user/v0")
+@RequestMapping(value = "/api/user")
 public class UserRest {
     private static final Logger log = LoggerFactory.getLogger(UserRest.class);
     final UserService userService;
@@ -31,7 +31,7 @@ public class UserRest {
         this.accountService = accountService;
     }
 
-    @PostMapping(value = "/loadUser")
+    @PostMapping(value = "/v0/loadUser")
     public ResponseData<JsonObject> loadUserByUserName(@RequestBody JsonObject jsonObject, @RequestParam("lang") String lang) {
         ResponseData responseData = new ResponseData();
         Header header = new Header(StatusCode.success, MessageCode.success);
@@ -75,6 +75,50 @@ public class UserRest {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @PostMapping(value = "/v0/update/info")
+    public ResponseData<JsonObject> updateUserInfo(@RequestBody JsonObject jsonObject, @RequestParam("lang") String lang) {
+        ResponseData responseData = new ResponseData();
+        Header header = new Header(StatusCode.success, MessageCode.success);
+        try {
+            String firstName =  jsonObject.getString("firstName").trim();
+            String lastName =  jsonObject.getString("lastName").trim();
+            String gender = jsonObject.getString("gender").trim();
+            String dateBirth = jsonObject.getString("dateBirth").trim();
+
+            if (firstName ==null || firstName == "") {
+                header.setResponseMessage("Invalid_FirstName");
+                responseData.setResult(header);
+                return responseData;
+            }  else if (lastName ==null || lastName.equals("")) {
+                header.setResponseMessage("Invalid_LastName");
+                responseData.setResult(header);
+                return responseData;
+            } else if (gender ==null || gender.equals("")) {
+                header.setResponseMessage("Invalid_Gender");
+                responseData.setResult(header);
+                return responseData;
+            } else if (dateBirth ==null || dateBirth.equals("")) {
+                header.setResponseMessage("Invalid_DB");
+                responseData.setResult(header);
+                return responseData;
+            } else {
+                int update = this.userService.updateUserInfo(jsonObject);
+                if (update > 0 ) {
+                    responseData.setResult(header);
+                    responseData.setBody(header);
+                    return  responseData;
+                }
+            }
+        } catch (Exception | ValidatorException e) {
+            e.printStackTrace();
+            header.setResponseCode(StatusCode.exception);
+            header.setResponseMessage(StatusCode.exception);
+            responseData.setResult(header);
+            return responseData;
+        }
+        return  responseData;
     }
 
 
