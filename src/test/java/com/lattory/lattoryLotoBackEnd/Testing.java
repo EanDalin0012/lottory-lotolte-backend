@@ -1,6 +1,7 @@
 package com.lattory.lattoryLotoBackEnd;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class Testing {
     public static void main(String[] args) {
@@ -13,5 +14,10 @@ public class Testing {
         }
         System.out.println(account + accountID);
         System.out.println(account.length());
+        String password = "admin123";
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encryptPassword = passwordEncoder.encode(password);
+        System.out.println("encryptPassword:"+encryptPassword);
+
     }
 }

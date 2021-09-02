@@ -16,6 +16,7 @@
             , u.other_phone_number  as "otherPhoneNumber"
 			, u.create_date			as "createDate"
 			, u.address
+			, u.is_first_login       as "isFirstLogin"
         FROM user_ u
         WHERE u.user_name = #{userName}
 	     ]]>
