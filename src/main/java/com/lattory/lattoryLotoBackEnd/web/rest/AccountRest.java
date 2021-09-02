@@ -75,6 +75,14 @@ public class AccountRest {
             String userName = personalAccountInfo.getString("userName");
             String accountType = personalAccountInfo.getString("accountType").trim();
             String  currency = personalAccountInfo.getString("currency").trim();
+            JsonObject checkUserNameInput = new JsonObject();
+            checkUserNameInput.setString("userName", userName);
+            JsonObject userInquiry = this.userService.loadUserByName(checkUserNameInput);
+            if (userInquiry != null) {
+                header.setResponseMessage("User_Had");
+                responseData.setResult(header);
+                return responseData;
+            }
             if (firstName ==null || firstName == "") {
                 header.setResponseMessage("Invalid_FirstName");
                 responseData.setResult(header);
