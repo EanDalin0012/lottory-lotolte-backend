@@ -34,6 +34,21 @@
 	     ]]>
     </select>
 
+    <select id="inquiryAccountByID" resultType="JsonObject">
+        <![CDATA[
+            SELECT
+                acc."id"
+                , acc.account_name      as "accountName"
+                , acc.account_id        as "accountID"
+                , acc.account_type      as "accountType"
+                , acc.account_balance   as "accountBalance"
+                , acc.account_status    as "status"
+                , acc.account_currency   as "currency"
+            FROM account as acc
+            WHERE acc.id = #{id};
+	     ]]>
+    </select>
+
     <insert id="save">
         <![CDATA[
             INSERT INTO account
@@ -101,6 +116,15 @@
             UPDATE account
 			SET
 			    account_name      = #{accountName}
+			WHERE id 	= #{id} and account_id = #{accountID}
+    	]]>
+    </update>
+
+    <update id="updateAccountBalance">
+        <![CDATA[
+            UPDATE account
+			SET
+			    account_balance      = #{accountBalance}
 			WHERE id 	= #{id} and account_id = #{accountID}
     	]]>
     </update>

@@ -13,4 +13,6 @@ public interface AccountInterface {
     int updateAccountName(JsonObject param) throws ValidatorException;
     JsonObject inquiryUserInfoByAccountID(JsonObject param) throws ValidatorException;
     int disableAccount(JsonObject param) throws ValidatorException;
+    JsonObject inquiryAccountByID(JsonObject param) throws ValidatorException;
+    int updateAccountBalance(JsonObject param) throws ValidatorException;
 }

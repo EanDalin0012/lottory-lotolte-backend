@@ -14,5 +14,7 @@ public interface AccountDao {
     int maxAccountID();
     int updateAccountName(JsonObject param);
     JsonObject inquiryUserInfoByAccountID(JsonObject param);
+    JsonObject inquiryAccountByID(JsonObject param);
     int disableAccount(JsonObject param) throws ValidatorException;
+    int updateAccountBalance(JsonObject param) throws ValidatorException;
 }
