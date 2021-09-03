@@ -12,4 +12,5 @@ public interface AccountInterface {
     int maxAccountID();
     int updateAccountName(JsonObject param) throws ValidatorException;
     JsonObject inquiryUserInfoByAccountID(JsonObject param) throws ValidatorException;
+    int disableAccount(JsonObject param) throws ValidatorException;
 }

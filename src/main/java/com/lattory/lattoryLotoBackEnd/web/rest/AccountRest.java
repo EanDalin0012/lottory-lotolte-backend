@@ -161,6 +161,7 @@ public class AccountRest {
             int accountInfoId = this.accountService.count() + 1;
             String accountID =  generateAccountID(this.accountService.maxAccountID() + 1);
 
+
             accountInfo.setInt("id", accountInfoId);
             accountInfo.setString("accountName", firstName + " "+lastName);
             accountInfo.setString("accountID", accountID);
@@ -276,15 +277,73 @@ public class AccountRest {
         return responseData;
     }
 
+
+    @PostMapping(value = "/v0/disable-account")
+    public ResponseData disableAccount(@RequestBody JsonObject jsonObject, @RequestParam("userId") int userID, @RequestParam("lang") String lang) {
+        ResponseData responseData = new ResponseData();
+        Header header = new Header(StatusCode.notFound, MessageCode.notFound);
+        try {
+            String accountID = jsonObject.getString("accountID");
+            int id = jsonObject.getInt("id");
+            String status = jsonObject.getString("status");
+
+            if(id <= 0 ) {
+                header.setResponseMessage("Invalid_AccountID");
+                responseData.setResult(header);
+                return responseData;
+            } else if (accountID ==null || accountID == "") {
+                header.setResponseMessage("Invalid_AccountID");
+                responseData.setResult(header);
+                return responseData;
+            } else if (status ==null || status == "") {
+                header.setResponseMessage("Invalid_AccountStatus");
+                responseData.setResult(header);
+                return responseData;
+            } else {
+                JsonObject input = new JsonObject();
+                input.setInt("userID", userID);
+                input.setString("accountID", accountID);
+                input.setString("status", status);
+                input.setInt("id", id);
+                input.setString("remark", jsonObject.getString("remark"));
+
+                int update = this.accountService.disableAccount(input);
+                if(update > 0) {
+                    header.setResponseCode(StatusCode.success);
+                    header.setResponseMessage(MessageCode.success);
+                    responseData.setResult(header);
+                    responseData.setBody(header);
+                    return responseData;
+                }
+            }
+
+        }catch (Exception | ValidatorException e) {
+            header.setResponseCode(StatusCode.exception);
+            header.setResponseMessage(StatusCode.exception);
+            responseData.setResult(header);
+            e.printStackTrace();
+            return responseData;
+        }
+
+        responseData.setResult(header);
+        return responseData;
+    }
+
+
     private String generateAccountID(int accountID) {
         int accountLength = String.valueOf(accountID).length();
+
         System.out.println(accountLength);
         String account = "";
         for (int i = 0 ; i < 9 - accountLength; i++) {
             account += "0";
         }
-        System.out.println(account + accountID);
-        System.out.println(account.length());
-        return account + accountID;
+        String accountId = account + accountID;
+        if(accountLength == 9 && accountId == "999999999") {
+            accountId = "1000000000";
+        }
+        System.out.println(accountId);
+        System.out.println(accountId.length());
+        return accountId;
     }
 }

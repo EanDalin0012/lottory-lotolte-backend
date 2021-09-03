@@ -2,6 +2,7 @@ package com.lattory.lattoryLotoBackEnd.web.dao;
 
 import com.lattory.lattoryLotoBackEnd.core.dto.JsonObject;
 import com.lattory.lattoryLotoBackEnd.core.dto.JsonObjectArray;
+import com.lattory.lattoryLotoBackEnd.core.exception.ValidatorException;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
@@ -13,4 +14,5 @@ public interface AccountDao {
     int maxAccountID();
     int updateAccountName(JsonObject param);
     JsonObject inquiryUserInfoByAccountID(JsonObject param);
+    int disableAccount(JsonObject param) throws ValidatorException;
 }
