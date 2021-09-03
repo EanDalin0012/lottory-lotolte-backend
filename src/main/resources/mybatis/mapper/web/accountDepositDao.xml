@@ -8,9 +8,9 @@
             (
                 id
                 , account_id
-                , accountID
+                , account_id_refer
                 , to_account_id
-                , to_accountID
+                , to_account_id_refer
                 , amount
                 , currency
                 , deposit_by
@@ -18,10 +18,10 @@
                 , remark
             ) VALUES (
                 #{id}
-                , #{accountId}
                 , #{accountID}
-                , #{toAccountId}
+                , #{accountIDRefer}
                 , #{toAccountID}
+                , #{toAccountIDRefer}
                 , #{amount}
                 , #{currency}
                 , #{userID}

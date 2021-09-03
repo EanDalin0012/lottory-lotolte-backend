@@ -33,11 +33,11 @@ public class AccountDepositRest {
         this.accountDepositDetailService = accountDepositDetailService;
     }
 
-    @PostMapping(value = "/v0/save")
+    @PostMapping(value = "/v0/deposit")
     public ResponseData save(@RequestBody JsonObject jsonObject, @RequestParam("userId") int userID, @RequestParam("lang") String lang) {
         ResponseData responseData = new ResponseData();
         ObjectMapper objectMapper = new ObjectMapper();
-        Header header = new Header(StatusCode.notFound, MessageCode.success);
+        Header header = new Header(StatusCode.notFound, MessageCode.notFound);
         TransactionStatus transactionStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
         try {
             String accountID    = jsonObject.getString("yourAccountID");
@@ -76,68 +76,88 @@ public class AccountDepositRest {
                 JsonObject accountInfoInput = new JsonObject();
                 accountInfoInput.setInt("id", accountId);
                 JsonObject accountInfo = accountService.inquiryAccountByID(accountInfoInput);
+                log.info("accountInfo:"+objectMapper.writeValueAsString(accountInfo));
+
+                if (amount > accountInfo.getInt("accountBalance")) {
+                    header.setResponseMessage("Account_Balance_Not_Enough");
+                    responseData.setResult(header);
+                    return responseData;
+                }
 
                 JsonObject toAccountInfoInput = new JsonObject();
-                accountInfoInput.setInt("id", toAccountId);
+                toAccountInfoInput.setInt("id", toAccountId);
                 JsonObject toAccountInfo = accountService.inquiryAccountByID(toAccountInfoInput);
+                log.info("toAccountInfo:"+objectMapper.writeValueAsString(toAccountInfo));
 
 
                 JsonObject accountDeposit = new JsonObject();
                 int accountDepositId  = this.accountDepositService.count() + 1;
                 accountDeposit.setInt("id", accountDepositId);
                 accountDeposit.setString("accountID", accountID);
-                accountDeposit.setInt("accountId", accountId);
+                accountDeposit.setInt("accountIDRefer", accountId);
                 accountDeposit.setString("toAccountID", toAccountID);
-                accountDeposit.setInt("toAccountId", toAccountId);
+                accountDeposit.setInt("toAccountIDRefer", toAccountId);
+
                 accountDeposit.setInt("amount", amount);
                 accountDeposit.setString("currency", currency);
                 accountDeposit.setString("remark", remark);
                 accountDeposit.setInt("userID", userID);
+                log.info("accountDeposit:"+objectMapper.writeValueAsString(accountDeposit));
                 int saveAccountDeposit = this.accountDepositService.save(accountDeposit);
+                log.info("saveAccountDeposit:"+saveAccountDeposit);
 
 
                 JsonObject accountDepositDetail = new JsonObject();
                 int accountDepositDetailId = this.accountDepositDetailService.count() + 1;
+                accountDepositDetail.setInt("id", accountDepositDetailId);
+                accountDepositDetail.setInt("depositId", accountDepositId);
                 accountDepositDetail.setInt("accountId",accountInfo.getInt("id"));
-                accountDepositDetail.setString("accountID", accountInfo.getString("accountID"));
                 accountDepositDetail.setInt("currentAccountBalance", accountInfo.getInt("accountBalance"));
                 accountDepositDetail.setInt("toAccountId", toAccountInfo.getInt("id"));
-                accountDepositDetail.setString("toAccountID", toAccountInfo.getString("accountID"));
                 accountDepositDetail.setInt("toCurrentAccountBalance", toAccountInfo.getInt("accountBalance"));
                 accountDepositDetail.setInt("amount", amount);
                 accountDepositDetail.setString("currency", currency);
                 accountDepositDetail.setInt("userID", userID);
+                log.info("accountDepositDetail:"+objectMapper.writeValueAsString(accountDepositDetail));
                 int saveAccountDepositDetail = this.accountDepositDetailService.save(accountDepositDetail);
-
+                log.info("saveAccountDepositDetail:"+saveAccountDepositDetail);
 
                 JsonObject updateYourAccountBalance = new JsonObject();
                 int currentBalanceYourAcc = accountInfo.getInt("accountBalance") - amount;
                 updateYourAccountBalance.setInt("id", accountInfo.getInt("id"));
                 updateYourAccountBalance.setString("accountID", accountInfo.getString("accountID"));
                 updateYourAccountBalance.setInt("accountBalance", currentBalanceYourAcc);
+                log.info("updateYourAccountBalance:"+objectMapper.writeValueAsString(updateYourAccountBalance));
                 int updateYourAcc = this.accountService.updateAccountBalance(updateYourAccountBalance);
-
+                log.info("updateYourAcc:"+updateYourAcc);
                 JsonObject updateToAccountBalance = new JsonObject();
                 int currentBalanceToAcc = toAccountInfo.getInt("accountBalance") + amount;
                 updateToAccountBalance.setInt("id", toAccountInfo.getInt("id"));
                 updateToAccountBalance.setString("accountID", toAccountInfo.getString("accountID"));
                 updateToAccountBalance.setInt("accountBalance", currentBalanceToAcc);
+                log.info("updateToAccountBalance:"+objectMapper.writeValueAsString(updateToAccountBalance));
                 int updateToAcc = this.accountService.updateAccountBalance(updateToAccountBalance);
-
+                log.info("updateYourAcc:"+updateToAcc);
                 if (updateYourAcc > 0 && updateToAcc > 0 && saveAccountDeposit > 0 && saveAccountDepositDetail > 0 ) {
                     // success
+                    header.setResponseCode(StatusCode.success);
+                    header.setResponseMessage(MessageCode.success);
+                    responseData.setBody(header);
+                    responseData.setResult(header);
+                    transactionManager.commit(transactionStatus);
+                    return responseData;
                 }
             }
 
         }catch (Exception | ValidatorException e) {
-            log.error(String.valueOf(e));
             header.setResponseCode(StatusCode.exception);
             header.setResponseMessage(StatusCode.exception);
             responseData.setResult(header);
             transactionManager.rollback(transactionStatus);
+            log.error(String.valueOf(e));
             return responseData;
         }
-
+        responseData.setResult(header);
         return responseData;
     }
 

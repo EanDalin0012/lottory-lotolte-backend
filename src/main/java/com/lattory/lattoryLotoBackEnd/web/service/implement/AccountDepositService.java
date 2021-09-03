@@ -20,7 +20,7 @@ public class AccountDepositService implements AccountDepositInterface {
 
     @Override
     public int save(JsonObject param) throws ValidatorException {
-        ValidatorUtil.validate(param, "id", "accountId", "accountID","toAccountID","toAccountId","userID", "currency", "amount");
+        ValidatorUtil.validate(param, "id", "accountIDRefer", "accountID","toAccountID","toAccountIDRefer","userID", "currency", "amount");
         return this.accountDepositDao.save(param);
     }
 }

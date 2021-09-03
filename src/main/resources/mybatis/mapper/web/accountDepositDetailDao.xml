@@ -7,26 +7,26 @@
             INSERT INTO account_deposit_detail
             (
                 id
+                , deposit_id
                 , account_id
-                , accountID
+                , current_account_balance
                 , to_account_id
-                , to_accountID
-                , amount
+                , to_current_account_balance
+                , deposit_amount
                 , currency
-                , deposit_by
-                , deposit_at
-                , remark
+                , date
+                , by
             ) VALUES (
                 #{id}
+                , #{depositId}
                 , #{accountId}
-                , #{accountID}
+                , #{currentAccountBalance}
                 , #{toAccountId}
-                , #{toAccountID}
+                , #{toCurrentAccountBalance}
                 , #{amount}
                 , #{currency}
-                , #{userID}
                 , to_char(NOW(), 'YYYY-MM-DD hh:mm:ss')
-                , #{remark}
+                , #{userID}
             )
     	]]>
     </insert>
