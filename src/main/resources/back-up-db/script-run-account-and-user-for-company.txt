@@ -1,0 +1,10 @@
+-- account
+
+INSERT INTO "public"."account" ("id", "account_name", "account_id", "account_type", "account_balance", "account_status", "create_by", "create_at", "modify_by", "modify_at", "user_id", "account_currency", "disable_by", "remark") VALUES (1, 'admin', '999999999', 'adm', '899997900', 'act', 1, '20210825', NULL, NULL, 1, 'KH', NULL, NULL);
+INSERT INTO "public"."account" ("id", "account_name", "account_id", "account_type", "account_balance", "account_status", "create_by", "create_at", "modify_by", "modify_at", "user_id", "account_currency", "disable_by", "remark") VALUES (2, '@min', '000000000', 'adm', '899997900', 'act', 1, '20210825', NULL, NULL, 2, 'KH', NULL, NULL);
+
+-- user name: admin@gmail.com, password: abc123
+INSERT INTO "public"."user_" ("id", "account_expired", "account_locked", "credentials_expired", "enabled", "password", "user_name", "status", "create_date", "create_by", "modify_date", "modify_by", "last_login_date", "last_login_time", "first_name", "last_name", "gender", "date_birth", "phone_number", "other_phone_number", "identify_id", "resource_id", "is_online", "is_first_login", "remark", "address") VALUES (1, 'f', 'f', 'f', 't', '$2a$10$fNYAsY8Np0XBFS4AfXn82OQZ5dV8yyks3vJSYd6RCezIIZzxIqQl2', 'admin@gmail.com', '3', '20210830', NULL, '20200924', 2, '20200924', '110541', 'Company', 'Account', 'm', '20170107', '0966555879', NULL, NULL, 21, NULL, 'f', NULL, 'PP');
+-- user name: @min@gmail.com, password: abc123
+INSERT INTO "public"."user_" ("id", "account_expired", "account_locked", "credentials_expired", "enabled", "password", "user_name", "status", "create_date", "create_by", "modify_date", "modify_by", "last_login_date", "last_login_time", "first_name", "last_name", "gender", "date_birth", "phone_number", "other_phone_number", "identify_id", "resource_id", "is_online", "is_first_login", "remark", "address") VALUES (2, 'f', 'f', 'f', 't', '$2a$10$fNYAsY8Np0XBFS4AfXn82OQZ5dV8yyks3vJSYd6RCezIIZzxIqQl2', '@min@gmail.com', '3', '20210830', NULL, '20200924', 2, '20200924', '110541', 'Company', 'Account', 'm', '20170107', '0966555879', NULL, NULL, 21, NULL, 'f', NULL, 'PP');
+

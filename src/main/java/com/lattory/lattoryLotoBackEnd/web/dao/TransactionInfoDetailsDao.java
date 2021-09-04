@@ -5,7 +5,7 @@ import com.lattory.lattoryLotoBackEnd.core.exception.ValidatorException;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface AccountDepositDao {
+public interface TransactionInfoDetailsDao {
     int count();
-    int save(JsonObject param) throws ValidatorException;
+    int doTransaction(JsonObject param) throws ValidatorException;
 }
