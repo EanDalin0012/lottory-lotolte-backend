@@ -1,7 +1,7 @@
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5432/lottory
     username: postgres
     password: root
     driver-class-name: org.postgresql.Driver
@@ -27,5 +27,3 @@ mybatis:
   type-aliases-package: com.lattory.lattoryLotoBackEnd.core.dto
   config-location: classpath:mybatis/mybatis_config.xml
   mapper-locations: classpath:mybatis/mapper/**/*.xml
-server:
-  port: 2020

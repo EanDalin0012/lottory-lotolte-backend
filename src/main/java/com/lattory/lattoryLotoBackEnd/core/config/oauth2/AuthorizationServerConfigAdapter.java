@@ -1,5 +1,7 @@
 package com.lattory.lattoryLotoBackEnd.core.config.oauth2;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -16,13 +18,13 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
-
 import javax.sql.DataSource;
 
 @Configuration
 @EnableAuthorizationServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class AuthorizationServerConfigAdapter extends AuthorizationServerConfigurerAdapter {
+    private static final Logger log = LoggerFactory.getLogger(AuthorizationServerConfigAdapter.class);
 
     @Autowired
     @Qualifier("dataSource")
@@ -32,7 +34,7 @@ public class AuthorizationServerConfigAdapter extends AuthorizationServerConfigu
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserDetailsService usrSvc;
 
     @Autowired
     private PasswordEncoder oauthClientPasswordEncoder;
@@ -49,23 +51,20 @@ public class AuthorizationServerConfigAdapter extends AuthorizationServerConfigu
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
-        //oauthServer.checkTokenAccess("isAuthenticated()").tokenKeyAccess("permitAll()");
-
         oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()").passwordEncoder(oauthClientPasswordEncoder);
     }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        //clients.withClientDetails()
         clients.jdbc(dataSource);
     }
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
+
         endpoints.tokenStore(tokenStore());
         endpoints.authenticationManager(authenticationManager);
-        // endpoints.userDetailsService(userDetailsService);
+         endpoints.userDetailsService(usrSvc);
 
-        //endpoints.tokenStore(tokenStore()).authenticationManager(authenticationManager).userDetailsService(userDetailsService);
     }
 }
