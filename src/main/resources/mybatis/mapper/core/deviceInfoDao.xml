@@ -17,6 +17,7 @@
 				, orientation
 				, create_by
 				, create_date
+				, modify_date
 				, ip
 				)
 			VALUES(
@@ -30,11 +31,30 @@
 				, #{browserVersion}
 				, #{orientation}
 				, #{userID}
-				, to_char(NOW(), 'DD-MM-YYYY hh:mm:ss')
+				, #{date}
+				, #{date}
 				, #{networkIP}
 				);
 	     ]]>
     </select>
+
+    <update id="updateDeviceInfo">
+        <![CDATA[
+            UPDATE device_info
+			SET
+			     os            = #{os}
+			    , browser       = #{browser}
+			    , device        = #{device}
+			    , os_version    = #{osVersion}
+			    , device_type        = #{deviceType}
+			    , browser_version    = #{browserVersion}
+			    , orientation        = #{orientation}
+			    , modify_date        = #{date}
+			    , ip                 = #{networkIP}
+			WHERE create_by = #{userID} and user_agent = #{userAgent};
+    	]]>
+    </update>
+
 
     <select id="count" resultType="java.lang.Integer">
         <![CDATA[
@@ -57,9 +77,34 @@
                 , dev.device_type   as "deviceType"
                 , dev.orientation
                 , dev.ip
+                , modify_date        as "date"
           FROM device_info dev
           WHERE dev.create_by = #{userID};
 	     ]]>
     </select>
+
+    <select id="inquiryByUserAgent" resultType="JsonObject">
+        <![CDATA[
+		  SELECT
+                 dev.id
+                , dev.user_agent as "userAgent"
+                , dev.os
+                , dev.os_version    as "osVersion"
+                , dev.browser
+                , dev.browser_version   as "browserVersion"
+                , dev.device
+                , dev.device_type   as "deviceType"
+                , dev.orientation
+                , dev.ip
+          FROM device_info dev
+          WHERE dev.create_by = #{userID} and dev.user_agent = #{userAgent};
+	     ]]>
+    </select>
+
+    <delete id="deleteDeviceInfo">
+        DELETE from device_info
+        WHERE create_by = #{userID} and user_agent = #{userAgent};
+    </delete>
+
 
 </mapper>

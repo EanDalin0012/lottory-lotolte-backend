@@ -33,7 +33,7 @@ public class UserRest {
     }
 
     @PostMapping(value = "/v0/loadUser")
-    public ResponseData<JsonObject> loadUserByUserName(@RequestBody JsonObject jsonObject, @RequestParam("lang") String lang) {
+    public ResponseData<JsonObject> loadUserByUserName(@RequestBody JsonObject jsonObject, @RequestParam("lang") String lang, @RequestParam("date") String date) {
         ResponseData responseData = new ResponseData();
         Header header = new Header(StatusCode.success, MessageCode.success);
         try {
@@ -41,7 +41,6 @@ public class UserRest {
             log.info(objectMapper.writeValueAsString(jsonObject));
             String userName = jsonObject.getString("userName");
             JsonObject deviceInfo = jsonObject.getJsonObject("deviceInfo");
-
 
             if(!userName.trim().equals("") || userName == null) {
                 JsonObject user = new JsonObject();
@@ -55,6 +54,7 @@ public class UserRest {
                 log.info("account Info:"+objectMapper.writeValueAsString(accountInfo));
 
                 if(deviceInfo != null) {
+                    deviceInfo.setString("date", date);
                     deviceInfo.setInt("userID", userData.getInt("id"));
                     eventPublisher.publishEvent(new HistoryUserLoginEvent(deviceInfo));
                 }

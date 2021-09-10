@@ -5,5 +5,5 @@ import com.lattory.lattoryLotoBackEnd.core.exception.ValidatorException;
 
 public interface OauthAccessTokenInterface {
     int deleteOauthAccessTokenByUserName(JsonObject jsonObject) throws ValidatorException;
-    JsonObject getTokenByUserName(JsonObject jsonObject);
+    JsonObject getClientIDUserName(JsonObject jsonObject);
 }

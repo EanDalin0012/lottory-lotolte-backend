@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/api/my/account/v0")
+@RequestMapping(value = "/api/my/account")
 public class MyAccountRest {
     private static final Logger log = LoggerFactory.getLogger(MyAccountRest.class);
 
@@ -26,8 +26,8 @@ public class MyAccountRest {
         this.accountService = accountService;
     }
 
-    @PostMapping(value = "/inquiry")
-    public ResponseData accountInquiry(@RequestBody JsonObject jsonObject, @RequestParam("userId") int userID, @RequestParam("lang") String lang) {
+    @PostMapping(value = "/v0/inquiry")
+    public ResponseData accountInquiry(@RequestBody JsonObject jsonObject, @RequestParam("userId") int userID) {
         ResponseData responseData = new ResponseData();
         Header header = new Header(StatusCode.success, MessageCode.success);
         JsonObject json = new JsonObject();
