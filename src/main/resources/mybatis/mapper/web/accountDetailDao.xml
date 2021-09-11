@@ -16,7 +16,7 @@
                 , #{mainAccountID}
                 , #{subAccountID}
                 , #{userID}
-                , to_char(NOW(), 'YYYYMMDD')
+                , #{date}
             )
     	]]>
     </insert>

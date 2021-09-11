@@ -9,6 +9,7 @@ import com.lattory.lattoryLotoBackEnd.core.dto.JsonObjectArray;
 import com.lattory.lattoryLotoBackEnd.core.dto.ResponseData;
 import com.lattory.lattoryLotoBackEnd.core.exception.ValidatorException;
 import com.lattory.lattoryLotoBackEnd.core.service.implement.DeviceInfoService;
+import com.lattory.lattoryLotoBackEnd.core.service.implement.UserService;
 import com.lattory.lattoryLotoBackEnd.web.service.implement.AccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +22,11 @@ public class MyAccountRest {
 
     final DeviceInfoService deviceInfoService;
     final AccountService accountService;
-    MyAccountRest(DeviceInfoService deviceInfoService, AccountService accountService) {
+    final UserService userService;
+    MyAccountRest(DeviceInfoService deviceInfoService, AccountService accountService, UserService userService) {
         this.deviceInfoService = deviceInfoService;
         this.accountService = accountService;
+        this.userService = userService;
     }
 
     @PostMapping(value = "/v0/inquiry")
@@ -34,8 +37,11 @@ public class MyAccountRest {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             log.info("jsonObject :"+objectMapper.writeValueAsString(jsonObject));
+            JsonObject userInfoInput = new JsonObject();
+            userInfoInput.setInt("userID", userID);
+            JsonObject userInfo = userService.inquiryUserInfoByID(userInfoInput);
             JsonObject deviceInfo = new JsonObject();
-            deviceInfo.setInt("userID", userID);
+            deviceInfo.setString("userName", userInfo.getString("userName"));
             JsonObjectArray jsonObjectArray = deviceInfoService.inquiry(deviceInfo);
 
             if(jsonObject.getInt("userID") == 0 ) {

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.lattory.lattoryLotoBackEnd.core.dao.DeviceInfoDao">
 
-    <select id="save" resultType="JsonObject">
+    <insert id="save">
         <![CDATA[
 		  	INSERT INTO device_info
 				(
@@ -15,7 +15,7 @@
 				, device_type
 				, browser_version
 				, orientation
-				, create_by
+				, user_name
 				, create_date
 				, modify_date
 				, ip
@@ -30,13 +30,13 @@
 				, #{deviceType}
 				, #{browserVersion}
 				, #{orientation}
-				, #{userID}
+				, #{userName}
 				, #{date}
 				, #{date}
 				, #{networkIP}
 				);
 	     ]]>
-    </select>
+    </insert>
 
     <update id="updateDeviceInfo">
         <![CDATA[
@@ -51,7 +51,7 @@
 			    , orientation        = #{orientation}
 			    , modify_date        = #{date}
 			    , ip                 = #{networkIP}
-			WHERE create_by = #{userID} and user_agent = #{userAgent};
+			WHERE user_name = #{userName} and user_agent = #{userAgent};
     	]]>
     </update>
 
@@ -79,7 +79,7 @@
                 , dev.ip
                 , modify_date        as "date"
           FROM device_info dev
-          WHERE dev.create_by = #{userID};
+          WHERE dev.user_name = #{userName};
 	     ]]>
     </select>
 
@@ -97,7 +97,7 @@
                 , dev.orientation
                 , dev.ip
           FROM device_info dev
-          WHERE dev.create_by = #{userID} and dev.user_agent = #{userAgent};
+          WHERE dev.user_name = #{userName} and dev.user_agent = #{userAgent};
 	     ]]>
     </select>
 
@@ -105,6 +105,5 @@
         DELETE from device_info
         WHERE create_by = #{userID} and user_agent = #{userAgent};
     </delete>
-
 
 </mapper>

@@ -41,7 +41,7 @@ public class AccountRest {
     }
 
     @PostMapping(value = "/v0/save")
-    public ResponseData save(@RequestBody JsonObject jsonObject, @RequestParam("userId") int userID, @RequestParam("lang") String lang) {
+    public ResponseData save(@RequestBody JsonObject jsonObject, @RequestParam("userId") int userID, @RequestParam("date") String date) {
         ResponseData responseData = new ResponseData();
         ObjectMapper objectMapper = new ObjectMapper();
         Header header = new Header(StatusCode.notFound, MessageCode.success);
@@ -151,6 +151,7 @@ public class AccountRest {
             personalInform.setString("remark", remark);
             personalInform.setInt("userID", userID);
             personalInform.setString("address", address);
+            personalInform.setString("date", date);
 
             log.info("personalInform :"+ objectMapper.writeValueAsString(personalInform));
             int savePersonalInfo = this.userService.addNewUser(personalInform);
@@ -171,6 +172,7 @@ public class AccountRest {
             accountInfo.setInt("userID", personalInformID);
             accountInfo.setInt("createBy", userID);
             accountInfo.setString("currency", currency);
+            accountInfo.setString("date", date);
             log.info("accountInfo :"+ objectMapper.writeValueAsString(accountInfo));
             int saveAccountInfo = this.accountService.save(accountInfo);
 
@@ -180,6 +182,7 @@ public class AccountRest {
             accountDetailsInfo.setInt("mainAccountID", mainAccountID);
             accountDetailsInfo.setInt("subAccountID", accountInfoId);
             accountDetailsInfo.setInt("userID", userID);
+            accountDetailsInfo.setString("date", date);
 
             int saveAccountDetails = this.accountDetailService.addSubAccount(accountDetailsInfo);
 
@@ -204,7 +207,6 @@ public class AccountRest {
             header.setResponseCode(StatusCode.exception);
             header.setResponseMessage(StatusCode.exception);
             responseData.setResult(header);
-            e.printStackTrace();
             transactionManager.rollback(transactionStatus);
             return responseData;
         }

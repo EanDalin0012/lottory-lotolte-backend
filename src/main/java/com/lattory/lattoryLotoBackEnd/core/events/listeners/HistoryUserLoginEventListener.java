@@ -36,7 +36,7 @@ public class HistoryUserLoginEventListener implements ApplicationListener<Histor
             input.setString("browserVersion", deviceInfo.getString("browserVersion"));
             input.setString("orientation", deviceInfo.getString("orientation"));
             input.setString("networkIP", deviceInfo.getString("networkIP"));
-            input.setInt("userID", deviceInfo.getInt("userID"));
+            input.setString("userName", deviceInfo.getString("userName"));
             input.setString("date", deviceInfo.getString("date"));
             log.info("device info:"+objectMapper.writeValueAsString(input));
 

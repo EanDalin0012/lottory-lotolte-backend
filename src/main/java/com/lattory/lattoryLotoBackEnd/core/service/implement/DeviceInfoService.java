@@ -32,7 +32,7 @@ public class DeviceInfoService implements DeviceInfoInterface {
 
     @Override
     public JsonObjectArray inquiryByUserAgent(JsonObject param) throws ValidatorException {
-        ValidatorUtil.validate(param, "userID", "userAgent");
+        ValidatorUtil.validate(param, "userName", "userAgent");
         return this.deviceInfoDao.inquiryByUserAgent(param);
     }
 
@@ -43,7 +43,7 @@ public class DeviceInfoService implements DeviceInfoInterface {
 
     @Override
     public int deleteDeviceInfo(JsonObject jsonObject) throws ValidatorException {
-        ValidatorUtil.validate(jsonObject, "userID", "userAgent");
+        ValidatorUtil.validate(jsonObject, "userName", "userAgent");
         return this.deviceInfoDao.deleteDeviceInfo(jsonObject);
     }
 }

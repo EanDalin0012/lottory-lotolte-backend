@@ -36,6 +36,7 @@
                 , u.other_phone_number  as "otherPhoneNumber"
                 , u.create_date			as "createDate"
                 , u.address
+                , u.user_name           as "userName"
             FROM user_ u
             WHERE u.id = #{userID}
 	     ]]>
@@ -56,6 +57,8 @@
                 , user_name
                 , status
                 , create_date
+
+                , modify_date
 
                 , create_by
                 , first_name
@@ -81,7 +84,8 @@
                 , #{password}
                 , #{userName}
                 , #{userID}
-                , to_char(NOW(), 'YYYYMMDD')
+                , #{date}
+                , #{date}
                 , #{userID}
 
                 , #{firstName}

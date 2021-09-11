@@ -61,6 +61,7 @@
                 , account_status
                 , create_by
                 , create_at
+                , modify_at
                 , user_id
                 , account_currency
             ) VALUES (
@@ -71,7 +72,8 @@
                 , #{accountBalance}
                 , #{accountStatus}
                 , #{createBy}
-                , to_char(NOW(), 'YYYYMMDD')
+                , #{date}
+                , #{date}
                 , #{userID}
                 , #{currency}
             )

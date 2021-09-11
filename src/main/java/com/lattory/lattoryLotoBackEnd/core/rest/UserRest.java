@@ -53,11 +53,11 @@ public class UserRest {
 
                 log.info("account Info:"+objectMapper.writeValueAsString(accountInfo));
 
-                if(deviceInfo != null) {
-                    deviceInfo.setString("date", date);
-                    deviceInfo.setInt("userID", userData.getInt("id"));
-                    eventPublisher.publishEvent(new HistoryUserLoginEvent(deviceInfo));
-                }
+//                if(deviceInfo != null) {
+//                    deviceInfo.setString("date", date);
+//                    deviceInfo.setInt("userID", userData.getInt("id"));
+//                    eventPublisher.publishEvent(new HistoryUserLoginEvent(deviceInfo));
+//                }
 
                 JsonObject data = new JsonObject();
                 data.setJsonObject("userInfo", userData);
