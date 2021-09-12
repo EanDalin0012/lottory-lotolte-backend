@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface DefaultAuthenticationProviderDao {
     JsonObject getUserByName(JsonObject param);
+    JsonObject authenticate(JsonObject jsonObject);
     int lockedUser(JsonObject param);
     int trackSaveUserLock(JsonObject param);
     int trackUpdateUserLock(JsonObject param);

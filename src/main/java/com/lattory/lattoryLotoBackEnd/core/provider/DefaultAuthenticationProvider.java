@@ -58,7 +58,7 @@ public class DefaultAuthenticationProvider implements AuthenticationProvider {
             }
             input.setJsonObject("deviceInfo", deviceInfoObj);
 
-            JsonObject userInfo = userService.getUserObjectByName(input);
+            JsonObject userInfo = userService.authenticate(input);
 
             if (userInfo == null) {
                 log.info("============== Authorization User Not Found ===============");

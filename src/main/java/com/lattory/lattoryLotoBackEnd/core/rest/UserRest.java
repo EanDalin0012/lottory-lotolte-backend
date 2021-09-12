@@ -1,18 +1,22 @@
 package com.lattory.lattoryLotoBackEnd.core.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lattory.lattoryLotoBackEnd.core.constant.DemoProperties;
 import com.lattory.lattoryLotoBackEnd.core.constant.MessageCode;
 import com.lattory.lattoryLotoBackEnd.core.constant.StatusCode;
 import com.lattory.lattoryLotoBackEnd.core.dto.Header;
 import com.lattory.lattoryLotoBackEnd.core.dto.JsonObject;
 import com.lattory.lattoryLotoBackEnd.core.dto.ResponseData;
+import com.lattory.lattoryLotoBackEnd.core.encryption.EncryptionUtil;
 import com.lattory.lattoryLotoBackEnd.core.events.HistoryUserLoginEvent;
 import com.lattory.lattoryLotoBackEnd.core.exception.ValidatorException;
+import com.lattory.lattoryLotoBackEnd.core.service.implement.DefaultAuthenticationProviderService;
 import com.lattory.lattoryLotoBackEnd.core.service.implement.UserService;
 import com.lattory.lattoryLotoBackEnd.web.service.implement.AccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,12 +28,14 @@ public class UserRest {
     private static final Logger log = LoggerFactory.getLogger(UserRest.class);
     final UserService userService;
     final AccountService accountService;
+    final DefaultAuthenticationProviderService defaultAuthenticationProviderService;
     @Inject
     private ApplicationEventPublisher eventPublisher;
 
-    UserRest(UserService userService, AccountService accountService) {
+    UserRest(UserService userService, AccountService accountService, DefaultAuthenticationProviderService defaultAuthenticationProviderService) {
         this.userService = userService;
         this.accountService = accountService;
+        this.defaultAuthenticationProviderService = defaultAuthenticationProviderService;
     }
 
     @PostMapping(value = "/v0/loadUser")
@@ -53,12 +59,6 @@ public class UserRest {
 
                 log.info("account Info:"+objectMapper.writeValueAsString(accountInfo));
 
-//                if(deviceInfo != null) {
-//                    deviceInfo.setString("date", date);
-//                    deviceInfo.setInt("userID", userData.getInt("id"));
-//                    eventPublisher.publishEvent(new HistoryUserLoginEvent(deviceInfo));
-//                }
-
                 JsonObject data = new JsonObject();
                 data.setJsonObject("userInfo", userData);
                 data.setJsonObject("accountInfo", accountInfo);
@@ -68,7 +68,6 @@ public class UserRest {
             } else {
                 header.setResponseCode(StatusCode.notFound);
                 header.setResponseMessage("Invalid_UserName");
-
             }
             responseData.setResult(header);
             return responseData;
@@ -172,34 +171,64 @@ public class UserRest {
     @PostMapping(value = "/v0/change-password")
     public ResponseData<JsonObject> changePassword(@RequestBody JsonObject jsonObject, @RequestParam("lang") String lang) {
         ResponseData responseData = new ResponseData();
-        Header header = new Header(StatusCode.success, MessageCode.success);
-        try {
-            String userName =  jsonObject.getString("userName").trim();
-            int id =  jsonObject.getInt("id");
-            String password = jsonObject.getString("password").trim();
+        Header header = new Header(StatusCode.notFound, MessageCode.notFound);
+        String encodedBase64Key = EncryptionUtil.encodeKey(DemoProperties.secretKey);
 
-            if (id == 0) {
-                header.setResponseMessage("Invalid_UserName");
+
+        try {
+            String userNameEncrypt =  jsonObject.getString("userName").trim();
+            String userName = EncryptionUtil.decrypt(userNameEncrypt, encodedBase64Key);
+            int userID =  jsonObject.getInt("userID");
+
+            String passwordEncrypt = jsonObject.getString("oldPassword").trim();
+            String password        = EncryptionUtil.decrypt(passwordEncrypt, encodedBase64Key);
+
+            String newPasswordEncrypt = jsonObject.getString("newPassword").trim();
+            String newPassword = EncryptionUtil.decrypt(newPasswordEncrypt, encodedBase64Key).trim();
+
+            JsonObject userInfoInput = new JsonObject();
+            userInfoInput.setString("userName", userName);
+            JsonObject userInfo = this.defaultAuthenticationProviderService.getUserObjectByName(userInfoInput);
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String _password = "";
+            if (userInfo != null) {
+                _password = userInfo.getString("password");
+            }
+
+            boolean isPasswordMatch = passwordEncoder.matches(password, _password);
+
+            if (userID == 0) {
+                header.setResponseMessage("InvalidUserName");
                 responseData.setResult(header);
                 return responseData;
             }  else if (userName ==null || userName.equals("")) {
-                header.setResponseMessage("Invalid_UserName");
+                header.setResponseMessage("InvalidUserName");
                 responseData.setResult(header);
                 return responseData;
             } else if (password ==null || password.equals("")) {
-                header.setResponseMessage("Invalid_Password");
+                header.setResponseMessage("PasswordRequire");
                 responseData.setResult(header);
                 return responseData;
-            }  else {
-                BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-                String encryptPassword = passwordEncoder.encode(password);
+            } else if (newPassword == null || newPassword.equals("")) {
+                header.setResponseMessage("NewPasswordRequire");
+                responseData.setResult(header);
+                return responseData;
+            } else if (!isPasswordMatch) {
+                header.setResponseMessage("IncorrectPassword");
+                responseData.setResult(header);
+                return responseData;
+            } else {
+
+                String encryptPassword = passwordEncoder.encode(newPassword);
                 JsonObject input = new JsonObject();
-                input.set("id", id);
+                input.set("id", userID);
                 input.setString("userName", userName);
                 input.setString("password", encryptPassword);
                 input.setBoolean("isFirstLogin", false);
                 int update = this.userService.resetPassword(input);
                 if (update > 0 ) {
+                    header.setResponseCode(StatusCode.success);
+                    header.setResponseMessage(MessageCode.success);
                     responseData.setResult(header);
                     responseData.setBody(header);
                     return  responseData;

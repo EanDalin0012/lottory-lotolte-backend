@@ -18,6 +18,41 @@
         <result property="name" column="authority_name"/>
     </resultMap>
 
+    <resultMap type="JsonObject" id="authenticated">
+        <id property="id" column="id"/>
+        <result property="username" column="user_name"/>
+        <result property="password" column="password"/>
+        <result property="accountExpired" column="account_expired"/>
+        <result property="accountLocked" column="account_locked"/>
+        <result property="credentialsExpired" column="credentials_expired"/>
+        <result property="enabled" column="enabled"/>
+        <association property="authorities" resultMap="authority" javaType="list"/>
+    </resultMap>
+
+    <resultMap type="JsonObject" id="authenticateAuthority">
+        <id property="id" column="authority_id"/>
+        <result property="name" column="authority_name"/>
+    </resultMap>
+
+    <select id="authenticate" resultMap="authenticated">
+        <![CDATA[
+			SELECT
+				 u.id
+				, u.user_name
+				, u."password"
+				, u.account_expired
+				, u.account_locked
+				, u.credentials_expired
+				, u.enabled
+				, au."name" as "authority_name"
+				, au."id" as "authority_id"
+			FROM user_ as u
+			LEFT JOIN users_authorities as ua on u."id" = ua.user_id
+			LEFT JOIN authority as au on au."id" = ua.authority_id
+			WHERE user_name = #{userName};
+	   ]]>
+    </select>
+
     <select id="getUserByName" resultMap="user">
         <![CDATA[
 			SELECT

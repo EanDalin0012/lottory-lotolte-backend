@@ -39,12 +39,23 @@ public class DefaultAuthenticationProviderService implements DefaultAuthenticati
 
     @Override
     public JsonObject getUserObjectByName(JsonObject param) throws Exception {
-        JsonObject object = this.oauthAccessTokenService.getClientIDUserName(param);
+//        removeTokenAndDeviceInfo(param);
+        return defaultAuthenticationProviderDao.getUserByName(param);
+    }
+
+    @Override
+    public JsonObject authenticate(JsonObject jsonObject) {
+        removeTokenAndDeviceInfo(jsonObject);
+        return defaultAuthenticationProviderDao.authenticate(jsonObject);
+    }
+
+    private void removeTokenAndDeviceInfo(JsonObject jsonObject) {
+        JsonObject object = this.oauthAccessTokenService.getClientIDUserName(jsonObject);
         if (object !=null) {
             String clientId = object.getString("clientID");
-            String userName = param.getString("userName");
-            if(param.getJsonObject("deviceInfo") != null) {
-                JsonObject deviceInfo = param.getJsonObject("deviceInfo");
+            String userName = jsonObject.getString("userName");
+            if(jsonObject.getJsonObject("deviceInfo") != null) {
+                JsonObject deviceInfo = jsonObject.getJsonObject("deviceInfo");
                 deviceInfo.setString("userName", userName);
                 eventPublisher.publishEvent(new HistoryUserLoginEvent(deviceInfo));
             }
@@ -53,7 +64,6 @@ public class DefaultAuthenticationProviderService implements DefaultAuthenticati
                 tokenStore.removeAccessToken(s);
             }
         }
-        return defaultAuthenticationProviderDao.getUserByName(param);
     }
 
     @Override
